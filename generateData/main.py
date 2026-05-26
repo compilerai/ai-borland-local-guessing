@@ -4,6 +4,7 @@ import os
 import random
 import string
 from collections import defaultdict
+from tqdm import tqdm
 
 LOGGER = logging.getLogger(__name__)
 
@@ -255,7 +256,7 @@ if __name__ == "__main__":
     LOGGER.info("Generating samples for %d", args.num_samples)
     
     success_count = 0
-    for i in range(args.num_samples):
+    for i in tqdm(range(args.num_samples), desc="Generating samples"):
         file_path = os.path.join(args.output_dir, f"sample_{i:05d}.c")
 
         try:
