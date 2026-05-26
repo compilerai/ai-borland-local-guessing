@@ -21,13 +21,13 @@ MAX_ARRAY_SIZE = 512
 VOLATILE_THRESHOLD = 0.8
 OPAQUE_SINK_THRESHOLD = 0.8
 NOISE_GHOST_VARS_PROB = 0.8
-NOISE_ARTITHMETIC_OPS_PROB = 0.8
-MAX_NOISE_ARITHMETIC_OPS = 10
+# Noise tuning
+MAX_NOISE_BLOCKS = 3
+NOISE_ARTITHMETIC_OPS_PROB = 0.6
+NOISE_CONDITIONAL_PROB = 0.5
+NOISE_FOR_LOOP_PROB = 0.4
 BINARY_OPS_PROB = 0.3
-MAX_CONSTANT_VAR = 200
-THIRD_VARIABLE_PROB = 0.5
-NOISE_CONDITIONAL_PROB = 0.7
-NOISE_FOR_LOOP_PROB = 0.7
+THIRD_VAR_BEING_CONST_PROB = 0.5
 
 def setup_logger(level: str) -> None:
     numeric_level = getattr(logging, level.upper(), logging.INFO)
@@ -86,7 +86,6 @@ def generate_function_body(func_id:int) -> str:
     num_vars = random.randint(MIN_NUM_HOIST_DECL, MAX_NUM_HOIST_DECL)
     # mapping variable type to variable names
     var_info_map = defaultdict(list)
-
     # tracking all variables :: each entry would be a subarray with 4 entities - var_type, var_name, is_array, is_ghost_variable 
     all_vars = []
 
@@ -94,11 +93,10 @@ def generate_function_body(func_id:int) -> str:
         # randomly choose one datatype for var_id from C_TYPES
         v_type = random.choice(C_TYPES)
         v_name = get_rand_name()
-
         is_array = random.random() < IS_ARRAY_PROB_THRESHOLD
         is_ghost_variable = random.random() > NOISE_GHOST_VARS_PROB
-        if is_array:
 
+        if is_array:
             array_size = random.randint(MIN_ARRAY_SIZE, MAX_ARRAY_SIZE)
             lines.append(f"    {v_type} {v_name}[{array_size}];")
         else:
@@ -134,52 +132,83 @@ def generate_function_body(func_id:int) -> str:
     # Interleaving some mathematical assignments to add register pressure
     # v : [var_type, var_name, is_array, is_ghost_variable]
     OPS = ["+", "-", "*"]
-    scalars = [v for v in all_vars if not v[2] and v[0] in C_TYPES]
+    REL_OPS = ["<", ">", "<=", ">=", "!=", "=="] # Added relational operators
+    INT_TYPES = ["int", "short", "long", "char"]
 
-    if len(scalars)  >= 1:
-        noisy_arithmetic_ops = random.randint(1, MAX_NOISE_ARITHMETIC_OPS)
-        for ops in range(noisy_arithmetic_ops):
+    all_scalers = [v for v in all_vars if not v[2] and v[0] in C_TYPES]
+    int_scalars = [v for v in all_vars if not v[2] and v[0] in INT_TYPES]
+
+    if len(all_scalers)  >= 2:
+        noisy_blocks = random.randint(1, MAX_NOISE_BLOCKS)
+        for ops in range(noisy_blocks):
             
-            source_var = random.choice(scalars)
-            target_var = random.choice(scalars)
-            ops_selected = random.choice(OPS)
+            target_var = random.choice(all_scalers)
+            available_sources = [v for v in all_scalers if v[1] != target_var[1]]
 
-            third_var = random.choice(scalars)[1] if random.random() > THIRD_VARIABLE_PROB else random.randint(1, MAX_CONSTANT_VAR)
-            alt_var = random.choice(scalars)[1] if random.random() > THIRD_VARIABLE_PROB else random.randint(1, MAX_CONSTANT_VAR)
+            if available_sources:
+                source_var = random.choice(available_sources)
+                ops_selected = random.choice(OPS)
+                available_sources_3rd_var = [
+                    v for v in all_scalers
+                    if v[1] not in {target_var[1], source_var[1]}
+                ]
 
-            # Step 3.1 :: simple arithmetic ops
-            curr_lines = []
-            if source_var[1] != target_var[1] and random.random() > BINARY_OPS_PROB:
-                # trinary ops
-                curr_lines.append(f"    {target_var[1]} = {source_var[1]} {ops_selected} {third_var};")
-            else:
-                # binary ops
-                curr_lines.append(f"    {target_var[1]} {ops_selected}= {third_var};")
-            grouped_lines.append(curr_lines)
+                if random.random() > THIRD_VAR_BEING_CONST_PROB or not available_sources_3rd_var:
+                    third_var = random.randint(1, 200)
+                else:
+                    third_var = random.choice(available_sources_3rd_var)[1]
+
+                # Step 3.1 :: simple arithmetic ops
+                curr_lines = []
+                if random.random() > BINARY_OPS_PROB:
+                    # trinary ops
+                    curr_lines.append(f"    {target_var[1]} = {source_var[1]} {ops_selected} {third_var};")
+                else:
+                    # binary ops
+                    curr_lines.append(f"    {target_var[1]} {ops_selected}= {third_var};")
+                grouped_lines.append(curr_lines)
 
             # Step 3.2 ::  Simple conditional ops
-            curr_lines = []
-            cond_var = random.choice(scalars)
-            curr_lines.append(f"    if ({cond_var[1]} != {alt_var}) {{")
-            curr_lines.append(f"        {random.choice(scalars)[1]} += {third_var};")
-            curr_lines.append(f"    }} else {{")
-            curr_lines.append(f"        {random.choice(scalars)[1]} -= {third_var};")
-            curr_lines.append(f"    }}")
-            grouped_lines.append(curr_lines)
+            if random.random() < NOISE_CONDITIONAL_PROB:
+                cond_var = random.choice(all_scalers)
+                available_targets = [v for v in all_scalers if v[1] != cond_var[1]]
+
+                if available_targets:
+                    target_var = random.choice(available_targets)
+                    rel_op = random.choice(REL_OPS)
+                    compare_val = random.randint(0, 100)
+                    modify_val = random.randint(1, 15)
+                    
+                    curr_lines = []
+                    curr_lines.append(f"    if ({cond_var[1]} {rel_op} {compare_val}) {{")
+                    curr_lines.append(f"        {target_var[1]} += {modify_val};")
+                    curr_lines.append(f"    }} else {{")
+                    curr_lines.append(f"        {target_var[1]} -= {modify_val};")
+                    curr_lines.append(f"    }}")
+                    grouped_lines.append(curr_lines)
 
             # Step 3.3 ::  Simple loops
-            curr_lines = []
-            loop_cond_var = random.choice(scalars)
-            initial_val = random.randint(0, 5)
-            max_break_condn = random.choice(scalars)
-            curr_lines.append(f"    for ({loop_cond_var[1]} = {initial_val}; {loop_cond_var[1]} < {max_break_condn[1]}; ++{loop_cond_var[1]}) {{")
-            curr_lines.append(f"        if ({cond_var[1]} != {alt_var}) {{")
-            curr_lines.append(f"            {random.choice(scalars)[1]} += {third_var};")
-            curr_lines.append(f"        }} else {{")
-            curr_lines.append(f"            {random.choice(scalars)[1]} -= {third_var};")
-            curr_lines.append(f"        }}")
-            curr_lines.append(f"    }}")
-            grouped_lines.append(curr_lines)
+            if random.random() < NOISE_FOR_LOOP_PROB and len(int_scalars) >= 2:
+                
+                loop_cond_var = random.choice(int_scalars)
+                available_breaks = [v for v in int_scalars if v[1] != loop_cond_var[1]]
+
+                if available_breaks:
+                    max_break_condn = random.choice(available_breaks)
+                    rel_op = random.choice(REL_OPS)
+                    target_var = random.choice(all_scalers)
+                    compare_val = random.randint(0, 100)
+                    modify_val = random.randint(1, 15)
+
+                    curr_lines = []
+                    curr_lines.append(f"    for ({loop_cond_var[1]} = 0; {loop_cond_var[1]} < {max_break_condn[1]}; ++{loop_cond_var[1]}) {{")
+                    curr_lines.append(f"        if ({target_var[1]} {rel_op} {compare_val}) {{")
+                    curr_lines.append(f"            {target_var[1]} += {modify_val};")
+                    curr_lines.append(f"        }} else {{")
+                    curr_lines.append(f"            {target_var[1]} -= {modify_val};")
+                    curr_lines.append(f"        }}")
+                    curr_lines.append(f"    }}")
+                    grouped_lines.append(curr_lines)
 
     # Step 4: the escapes - taking address
     for _, v_name, is_array, is_ghost_variable in all_vars:
