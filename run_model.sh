@@ -6,5 +6,8 @@
 #     --json_path ./data/dataset_labels.json \
 #     --asm_dir ./data/assembly_codes
 
-python -m generateData.parse_labels \
+# python -m generateData.parse_labels \
+#     --json_path ./data/dataset_labels.json
+
+python -m generateData.stripping_debug_asm_lines \
     --json_path ./data/dataset_labels.json
