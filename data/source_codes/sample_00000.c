@@ -22,253 +22,369 @@ void bazz(void*);
 
 
 void synth_func_0() {
-    int var_dtast, var_ulfpb;
-    long var_yrmxl;
-    float var_okcut;
+    long var_mjcyw[232];
+    double var_dkcrn[495];
+    int var_hnaqo[223];
+    struct Point var_rxhpm[100];
+    struct Buffer var_mnrxm, var_znees, var_byuch;
+    char var_tfpci;
+    struct Point var_glrxf;
+    int var_ixwlj;
 
-    var_dtast = 741;
-    var_yrmxl = 278;
-    var_okcut = 570.02;
-    var_ulfpb = 516;
+    var_mjcyw[0] = 951;
+    var_dkcrn[0] = 102.85;
+    var_mnrxm.id = 54;
+    var_znees.id = 810;
+    var_tfpci = 'H';
+    var_glrxf.x = 433;
+    var_byuch.id = 749;
+    var_hnaqo[0] = 502;
+    var_rxhpm[0].x = 917;
+    var_ixwlj = 767;
 
-    for (var_yrmxl = 0; var_yrmxl < var_ulfpb; ++var_yrmxl) {
-        if (var_yrmxl > 56) {
-            var_yrmxl += 12;
+    if (var_rxhpm[0].x > -1) {
+        foober((void*)&var_rxhpm);
+    }
+    var_mnrxm.id = var_znees.id - var_dkcrn[0];
+    var_mjcyw[0] -= var_dkcrn[0];
+    foober((void*)&var_dkcrn);
+    if (var_glrxf.x > -1) {
+        MYmywrite((void*)&var_glrxf);
+    }
+    foober((void*)&var_byuch);
+    foober((void*)&var_ixwlj);
+    foober((void*)&var_mnrxm);
+    if (var_hnaqo[0] > -1) {
+        foober((void*)&var_hnaqo);
+    }
+    for (var_tfpci = 0; var_tfpci < var_znees.id; ++var_tfpci) {
+        if (var_tfpci == 7) {
+            var_tfpci += 1;
         } else {
-            var_yrmxl -= 12;
+            var_tfpci -= 1;
         }
     }
-    var_yrmxl = var_dtast * var_okcut;
-    if (var_yrmxl > 50) {
-        var_ulfpb += 6;
-    } else {
-        var_ulfpb -= 6;
-    }
-    foober((void*)&var_okcut);
-    MYmyread((void*)&var_yrmxl);
+    baz((void*)&var_tfpci);
 }
 
 void synth_func_1() {
-    long var_mvpow[341];
-    short var_djoqz[222];
-    struct DataNode var_qyqpm[136];
-    short var_sfnwq[237];
-    struct Buffer var_zrtgs[108];
-    float var_qubat[493];
-    int var_rowkb[341];
-    int var_gjbbz;
-    struct DataNode var_urrtn;
-    struct Buffer var_srgyx;
-    short var_kxrlm;
+    struct DataNode var_jdpip[87];
+    int var_dsine[311];
+    int var_wwctx[508];
+    int var_ugvpv[383];
+    float var_ruuvh[374];
+    struct Point var_bzfsj, var_kpljc, var_vgafk;
+    struct DataNode var_yucts;
+    char var_stddx;
+    int var_uintb;
+    long var_bwtjy;
 
-    var_gjbbz = 784;
-    var_mvpow[0] = 958;
-    var_djoqz[0] = 447;
-    var_qyqpm[0].flag = 'S';
-    var_sfnwq[0] = 809;
-    var_zrtgs[0].id = 752;
-    var_qubat[0] = 525.42;
-    var_urrtn.flag = 'N';
-    var_srgyx.id = 637;
-    var_kxrlm = 309;
-    var_rowkb[0] = 640;
+    var_jdpip[0].flag = 'B';
+    var_dsine[0] = 319;
+    var_bzfsj.x = 741;
+    var_kpljc.x = 881;
+    var_wwctx[0] = 224;
+    var_yucts.flag = 'Y';
+    var_stddx = 'I';
+    var_uintb = 597;
+    var_ugvpv[0] = 287;
+    var_bwtjy = 189;
+    var_ruuvh[0] = 18.18;
+    var_vgafk.x = 62;
 
-    if (var_qubat[0] > -1) {
-        MYmywrite((void*)&var_qubat);
+    foober((void*)&var_jdpip);
+    for (var_jdpip[0].flag = 0; var_jdpip[0].flag < var_dsine[0]; ++var_jdpip[0].flag) {
+        if (var_ugvpv[0] < 48) {
+            var_ugvpv[0] += 15;
+        } else {
+            var_ugvpv[0] -= 15;
+        }
     }
-    var_qubat[0] *= var_zrtgs[0].id;
-    baz((void*)&var_gjbbz);
-    foober((void*)&var_sfnwq);
-    if (var_urrtn.flag > -1) {
-        baz((void*)&var_urrtn);
+    foober((void*)&var_wwctx);
+    MYmywrite((void*)&var_ruuvh);
+    MYmyread((void*)&var_kpljc);
+    if (var_uintb != 53) {
+        var_dsine[0] += 12;
+    } else {
+        var_dsine[0] -= 12;
     }
-    var_kxrlm = var_rowkb[0] - 200;
-    foober((void*)&var_mvpow);
-    MYmywrite((void*)&var_qyqpm);
-    MYmyread((void*)&var_srgyx);
-    MYmywrite((void*)&var_djoqz);
-    MYmywrite((void*)&var_rowkb);
+    MYmyread((void*)&var_stddx);
+    foober((void*)&var_bzfsj);
+    MYmyread((void*)&var_ugvpv);
+    if (var_ugvpv[0] < 4) {
+        var_bwtjy += 9;
+    } else {
+        var_bwtjy -= 9;
+    }
+    var_yucts.flag = var_uintb * 43;
+    baz((void*)&var_bwtjy);
+    MYmywrite((void*)&var_uintb);
+    bazz((void*)&var_dsine);
+    MYmywrite((void*)&var_vgafk);
+    var_uintb = var_vgafk.x + 129;
 }
 
 void synth_func_2() {
-    struct DataNode var_iyxbw[356];
-    float var_gmakd[422];
-    short var_njnra[183];
-    int var_fwnji[365];
-    struct DataNode var_xqnts[498];
-    char var_xvuss[228];
-    long var_wuaid;
-    double var_gqrrx;
-    struct Point var_kokpb;
-    volatile float var_hyups;
+    struct Point var_yryyo[432];
+    struct DataNode var_ttjwz[60];
+    char var_pavxn[234];
+    struct Point var_xghfk[336];
+    long var_dvlfk[306];
+    char var_cwgyh;
+    float var_rjygd;
+    struct DataNode var_vwrdw;
+    long var_snodl;
+    volatile double var_jxkyp;
+    struct Point var_sdtol;
 
-    var_iyxbw[0].flag = 'Q';
-    var_gmakd[0] = 737.86;
-    var_njnra[0] = 157;
-    var_wuaid = 296;
-    var_gqrrx = 977.50;
-    var_fwnji[0] = 376;
-    var_xqnts[0].flag = 'A';
-    var_xvuss[0] = 'L';
-    var_kokpb.x = 387;
-    var_hyups = 364.45;
+    var_yryyo[0].x = 926;
+    var_ttjwz[0].flag = 'M';
+    var_cwgyh = 'E';
+    var_rjygd = 77.43;
+    var_pavxn[0] = 'H';
+    var_xghfk[0].x = 926;
+    var_vwrdw.flag = 'D';
+    var_snodl = 213;
+    var_dvlfk[0] = 505;
+    var_jxkyp = 950.85;
+    var_sdtol.x = 653;
 
-    foober((void*)&var_hyups);
-    if (var_iyxbw[0].flag > -1) {
-        foober((void*)&var_iyxbw);
-    }
-    if (var_wuaid > -1) {
-        MYmyread((void*)&var_wuaid);
-    }
-    MYmyread((void*)&var_gmakd);
-    bazz((void*)&var_xvuss);
-    if (var_gqrrx > -1) {
-        baz((void*)&var_gqrrx);
-    }
-    bazz((void*)&var_njnra);
-    var_njnra[0] -= var_gmakd[0];
-    var_kokpb.x = var_xvuss[0] - 11;
-    if (var_wuaid != 55) {
-        var_iyxbw[0].flag += 2;
+    foober((void*)&var_rjygd);
+    if (var_jxkyp == 46) {
+        var_vwrdw.flag += 10;
     } else {
-        var_iyxbw[0].flag -= 2;
+        var_vwrdw.flag -= 10;
     }
-    if (var_fwnji[0] > -1) {
-        MYmywrite((void*)&var_fwnji);
+    MYmyread((void*)&var_snodl);
+    MYmyread((void*)&var_ttjwz);
+    if (var_yryyo[0].x > -1) {
+        baz((void*)&var_yryyo);
     }
+    MYmyread((void*)&var_pavxn);
+    baz((void*)&var_vwrdw);
+    if (var_cwgyh > -1) {
+        baz((void*)&var_cwgyh);
+    }
+    foober((void*)&var_xghfk);
+    MYmyread((void*)&var_jxkyp);
+    var_yryyo[0].x = var_rjygd - 102;
+    var_cwgyh += var_pavxn[0];
 }
 
 void synth_func_3() {
-    struct DataNode var_dfjwb[380];
-    struct Buffer var_nejmw[428];
-    struct Point var_pyyae[132];
-    struct DataNode var_zdvhw[59];
-    short var_ityfr[318];
-    long var_nvjin;
-    volatile short var_jivji;
-    double var_tchne;
-    struct Point var_afbwh;
-    int var_qzjcc;
-    struct DataNode var_yqghd;
+    char var_gwkee[267];
+    struct DataNode var_aaidf;
+    int var_zusrz;
+    long var_kmdun;
 
-    var_nvjin = 759;
-    var_jivji = 542;
-    var_dfjwb[0].flag = 'G';
-    var_nejmw[0].id = 164;
-    var_tchne = 96.29;
-    var_pyyae[0].x = 782;
-    var_zdvhw[0].flag = 'P';
-    var_afbwh.x = 479;
-    var_qzjcc = 704;
-    var_yqghd.flag = 'A';
-    var_ityfr[0] = 206;
+    var_aaidf.flag = 'K';
+    var_zusrz = 94;
+    var_kmdun = 274;
+    var_gwkee[0] = 'R';
 
-    if (var_nvjin > -1) {
-        MYmywrite((void*)&var_nvjin);
-    }
-    MYmywrite((void*)&var_nejmw);
-    if (var_dfjwb[0].flag == 96) {
-        var_zdvhw[0].flag += 8;
+    MYmyread((void*)&var_kmdun);
+    if (var_aaidf.flag <= 81) {
+        var_gwkee[0] += 6;
     } else {
-        var_zdvhw[0].flag -= 8;
+        var_gwkee[0] -= 6;
     }
-    MYmyread((void*)&var_dfjwb);
-    for (var_yqghd.flag = 0; var_yqghd.flag < var_jivji; ++var_yqghd.flag) {
-        if (var_afbwh.x != 97) {
-            var_afbwh.x += 5;
+    bazz((void*)&var_aaidf);
+    var_gwkee[0] = var_kmdun + 50;
+    var_zusrz = var_gwkee[0] * 10;
+    bazz((void*)&var_gwkee);
+    for (var_zusrz = 0; var_zusrz < var_aaidf.flag; ++var_zusrz) {
+        if (var_aaidf.flag >= 82) {
+            var_aaidf.flag += 2;
         } else {
-            var_afbwh.x -= 5;
+            var_aaidf.flag -= 2;
         }
     }
-    if (var_ityfr[0] > -1) {
-        MYmyread((void*)&var_ityfr);
-    }
-    MYmyread((void*)&var_afbwh);
-    if (var_tchne > -1) {
-        MYmywrite((void*)&var_tchne);
-    }
-    var_nejmw[0].id = var_dfjwb[0].flag + 106;
-    bazz((void*)&var_jivji);
-    var_afbwh.x = var_pyyae[0].x + var_zdvhw[0].flag;
-    MYmyread((void*)&var_zdvhw);
-    if (var_jivji < 0) {
-        var_nejmw[0].id += 14;
-    } else {
-        var_nejmw[0].id -= 14;
-    }
+    var_aaidf.flag = var_gwkee[0] - var_kmdun;
 }
 
 void synth_func_4() {
-    struct Buffer var_xgbhn[106];
-    struct DataNode var_yzzjl[404];
-    char var_vawey;
-    short var_mxied;
-    struct Buffer var_ctypc;
+    short var_kezus[144];
+    double var_nvyuw[260];
+    struct Point var_vdpcv[29];
+    struct Buffer var_xxaii[493];
+    struct Point var_wfobe[433];
+    int var_rsyfe;
+    short var_pphur, var_spwoi;
+    struct DataNode var_dlhrm;
+    volatile long var_ljbzd;
+    struct Point var_fgsvy;
 
-    var_vawey = 'K';
-    var_xgbhn[0].id = 714;
-    var_mxied = 479;
-    var_ctypc.id = 982;
-    var_yzzjl[0].flag = 'V';
+    var_rsyfe = 356;
+    var_pphur = 116;
+    var_dlhrm.flag = 'O';
+    var_kezus[0] = 875;
+    var_ljbzd = 993;
+    var_nvyuw[0] = 38.90;
+    var_vdpcv[0].x = 698;
+    var_xxaii[0].id = 331;
+    var_wfobe[0].x = 562;
+    var_spwoi = 179;
+    var_fgsvy.x = 466;
 
-    MYmyread((void*)&var_mxied);
-    if (var_vawey > -1) {
-        foober((void*)&var_vawey);
+    bazz((void*)&var_rsyfe);
+    MYmywrite((void*)&var_wfobe);
+    foober((void*)&var_kezus);
+    if (var_xxaii[0].id > -1) {
+        MYmyread((void*)&var_xxaii);
     }
-    baz((void*)&var_ctypc);
-    if (var_xgbhn[0].id != 24) {
-        var_yzzjl[0].flag += 7;
-    } else {
-        var_yzzjl[0].flag -= 7;
+    MYmywrite((void*)&var_ljbzd);
+    MYmyread((void*)&var_spwoi);
+    MYmyread((void*)&var_pphur);
+    foober((void*)&var_fgsvy);
+    for (var_kezus[0] = 0; var_kezus[0] < var_spwoi; ++var_kezus[0]) {
+        if (var_dlhrm.flag >= 49) {
+            var_dlhrm.flag += 5;
+        } else {
+            var_dlhrm.flag -= 5;
+        }
     }
-    if (var_ctypc.id == 43) {
-        var_xgbhn[0].id += 13;
-    } else {
-        var_xgbhn[0].id -= 13;
+    bazz((void*)&var_vdpcv);
+    var_vdpcv[0].x = var_rsyfe - var_spwoi;
+    bazz((void*)&var_nvyuw);
+    if (var_dlhrm.flag > -1) {
+        foober((void*)&var_dlhrm);
     }
-    var_ctypc.id = var_yzzjl[0].flag * var_xgbhn[0].id;
-    var_yzzjl[0].flag *= var_vawey;
-    foober((void*)&var_yzzjl);
-    if (var_xgbhn[0].id > -1) {
-        MYmyread((void*)&var_xgbhn);
-    }
-    var_vawey *= 182;
+    var_nvyuw[0] = var_spwoi - var_vdpcv[0].x;
 }
 
 void synth_func_5() {
-    long var_wolku[87];
-    double var_ruhsx[222];
-    char var_ukblq[134];
-    short var_hxlul[297];
-    float var_dkmkw[118];
-    struct Buffer var_dpqlc[482];
-    short var_goghe;
-    int var_kjkdj;
+    struct Buffer var_wigrl;
+    volatile int var_qnqsm;
+    double var_nlosm;
+    char var_thktd;
+    struct Point var_sryux, var_pijcr;
 
-    var_wolku[0] = 381;
-    var_ruhsx[0] = 393.14;
-    var_ukblq[0] = 'E';
-    var_hxlul[0] = 591;
-    var_goghe = 853;
-    var_dkmkw[0] = 391.96;
-    var_dpqlc[0].id = 654;
-    var_kjkdj = 988;
+    var_wigrl.id = 400;
+    var_qnqsm = 314;
+    var_nlosm = 937.63;
+    var_thktd = 'E';
+    var_sryux.x = 904;
+    var_pijcr.x = 794;
 
-    var_goghe += var_wolku[0];
-    var_wolku[0] = var_dkmkw[0] * var_ukblq[0];
-    if (var_hxlul[0] > -1) {
-        MYmywrite((void*)&var_hxlul);
+    MYmywrite((void*)&var_nlosm);
+    for (var_qnqsm = 0; var_qnqsm < var_sryux.x; ++var_qnqsm) {
+        if (var_pijcr.x >= 82) {
+            var_pijcr.x += 2;
+        } else {
+            var_pijcr.x -= 2;
+        }
     }
-    if (var_dpqlc[0].id < 28) {
-        var_wolku[0] += 12;
+    var_wigrl.id = var_qnqsm - var_sryux.x;
+    if (var_pijcr.x < 86) {
+        var_thktd += 13;
     } else {
-        var_wolku[0] -= 12;
+        var_thktd -= 13;
     }
-    if (var_wolku[0] > -1) {
-        foober((void*)&var_wolku);
+    bazz((void*)&var_qnqsm);
+    bazz((void*)&var_pijcr);
+    MYmywrite((void*)&var_sryux);
+    baz((void*)&var_wigrl);
+    var_sryux.x = var_pijcr.x * var_wigrl.id;
+    baz((void*)&var_thktd);
+}
+
+void synth_func_6() {
+    struct Buffer var_vrukw[33];
+    short var_cyjpy;
+    double var_gjiju, var_wlzrk, var_feaxp;
+    char var_rgvey;
+    int var_lawrt;
+    float var_ylavw;
+    struct Point var_rwzvp, var_gukeg, var_oyicb;
+    struct DataNode var_daeqq;
+
+    var_cyjpy = 256;
+    var_gjiju = 757.50;
+    var_vrukw[0].id = 899;
+    var_wlzrk = 968.83;
+    var_rgvey = 'Z';
+    var_feaxp = 997.18;
+    var_lawrt = 571;
+    var_ylavw = 939.15;
+    var_rwzvp.x = 159;
+    var_gukeg.x = 93;
+    var_oyicb.x = 491;
+    var_daeqq.flag = 'Q';
+
+    MYmyread((void*)&var_daeqq);
+    var_oyicb.x = var_ylavw * 159;
+    if (var_ylavw == 81) {
+        var_wlzrk += 4;
+    } else {
+        var_wlzrk -= 4;
     }
-    var_ukblq[0] = var_ruhsx[0] * 31;
-    foober((void*)&var_kjkdj);
-    MYmyread((void*)&var_dpqlc);
-    foober((void*)&var_ukblq);
+    bazz((void*)&var_gjiju);
+    var_rwzvp.x = var_vrukw[0].id * var_gjiju;
+    foober((void*)&var_oyicb);
+    if (var_ylavw > -1) {
+        foober((void*)&var_ylavw);
+    }
+    for (var_oyicb.x = 0; var_oyicb.x < var_lawrt; ++var_oyicb.x) {
+        if (var_wlzrk >= 19) {
+            var_wlzrk += 1;
+        } else {
+            var_wlzrk -= 1;
+        }
+    }
+    foober((void*)&var_vrukw);
+    foober((void*)&var_rgvey);
+    var_wlzrk = var_vrukw[0].id * var_feaxp;
+    baz((void*)&var_rwzvp);
+    bazz((void*)&var_cyjpy);
+    MYmywrite((void*)&var_feaxp);
+    foober((void*)&var_lawrt);
+    if (var_gukeg.x > -1) {
+        foober((void*)&var_gukeg);
+    }
+}
+
+void synth_func_7() {
+    int var_twwwb[145];
+    int var_plcrs[174];
+    struct DataNode var_plaph[346];
+    struct Buffer var_ppspp[440];
+    double var_mjmae[351];
+    int var_hjtao;
+    double var_xghgx, var_bpnpl;
+    float var_whtio;
+
+    var_twwwb[0] = 343;
+    var_plcrs[0] = 188;
+    var_plaph[0].flag = 'D';
+    var_ppspp[0].id = 309;
+    var_hjtao = 262;
+    var_mjmae[0] = 731.21;
+    var_xghgx = 163.12;
+    var_whtio = 474.08;
+    var_bpnpl = 172.91;
+
+    MYmywrite((void*)&var_plcrs);
+    MYmywrite((void*)&var_hjtao);
+    foober((void*)&var_plaph);
+    var_twwwb[0] = var_mjmae[0] * var_plaph[0].flag;
+    MYmyread((void*)&var_mjmae);
+    if (var_whtio != 34) {
+        var_ppspp[0].id += 15;
+    } else {
+        var_ppspp[0].id -= 15;
+    }
+    var_ppspp[0].id = var_xghgx + 109;
+    for (var_twwwb[0] = 0; var_twwwb[0] < var_plcrs[0]; ++var_twwwb[0]) {
+        if (var_bpnpl >= 99) {
+            var_bpnpl += 13;
+        } else {
+            var_bpnpl -= 13;
+        }
+    }
+    bazz((void*)&var_bpnpl);
+    MYmywrite((void*)&var_xghgx);
+    var_plaph[0].flag -= 171;
+    if (var_ppspp[0].id > -1) {
+        MYmywrite((void*)&var_ppspp);
+    }
 }

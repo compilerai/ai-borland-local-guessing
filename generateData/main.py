@@ -6,6 +6,7 @@ import string
 from collections import defaultdict
 from tqdm import tqdm
 import json
+import uuid
 
 LOGGER = logging.getLogger(__name__)
 
@@ -374,8 +375,33 @@ if __name__ == "__main__":
     # Final step : Output the JSON Ground Truth File
     json_path = os.path.join(args.output_dir, "dataset_labels.json")
     try:
+        placeholders = {}
+        
+        # 1. Convert only the inner dictionaries to single-line JSON strings and swap them for unique placeholders
+        for record in dataset_records:
+            for func in record["label"]["functions"]:
+                new_mappings = []
+                for mapping in func["variable_mapping"]:
+                    # Dump just this object to a compact, single-line string with nice spacing
+                    compact_str = json.dumps(mapping, separators=(', ', ': '))
+                    # Generate a unique placeholder ID
+                    ph = f"__VAR_MAPPING_{uuid.uuid4().hex}__"
+                    placeholders[ph] = compact_str
+                    new_mappings.append(ph)
+                func["variable_mapping"] = new_mappings
+        
+        # 2. Dump the main JSON with standard indentation
+        raw_json = json.dumps(dataset_records, indent=2)
+        
+        # 3. Swap the stringified placeholders back to the raw JSON objects
+        for ph, compact_str in placeholders.items():
+            # Replace the string literal (including the quotes) with the actual JSON object string
+            raw_json = raw_json.replace(f'"{ph}"', compact_str)
+            
+        # 4. Write perfectly formatted file
         with open(json_path, "w") as jf:
-            json.dump(dataset_records, jf, indent=2)
+            jf.write(raw_json)
+            
         LOGGER.info("Successfully saved ground truth JSON to %s", json_path)
     except IOError as e:
         LOGGER.error("Failed to save JSON file: %s", e)

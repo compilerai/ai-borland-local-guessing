@@ -1,7 +1,7 @@
 [
   {
     "file_id": 0,
-    "source_code_c": "#include <stdio.h>\n#include <stdlib.h>\n\nstruct Point {\n    int x;\n    int y;\n};\nstruct DataNode {\n    char flag;\n    double value;\n};\nstruct Buffer {\n    int id;\n    char buf[12];\n};\n\nvoid baz(void*);\nvoid foober(void*);\nvoid MYmyread(void*);\nvoid MYmywrite(void*);\nvoid bazz(void*);\n\n\nvoid synth_func_0() {\n    int var_dtast, var_ulfpb;\n    long var_yrmxl;\n    float var_okcut;\n\n    var_dtast = 741;\n    var_yrmxl = 278;\n    var_okcut = 570.02;\n    var_ulfpb = 516;\n\n    for (var_yrmxl = 0; var_yrmxl < var_ulfpb; ++var_yrmxl) {\n        if (var_yrmxl > 56) {\n            var_yrmxl += 12;\n        } else {\n            var_yrmxl -= 12;\n        }\n    }\n    var_yrmxl = var_dtast * var_okcut;\n    if (var_yrmxl > 50) {\n        var_ulfpb += 6;\n    } else {\n        var_ulfpb -= 6;\n    }\n    foober((void*)&var_okcut);\n    MYmyread((void*)&var_yrmxl);\n}\n\nvoid synth_func_1() {\n    long var_mvpow[341];\n    short var_djoqz[222];\n    struct DataNode var_qyqpm[136];\n    short var_sfnwq[237];\n    struct Buffer var_zrtgs[108];\n    float var_qubat[493];\n    int var_rowkb[341];\n    int var_gjbbz;\n    struct DataNode var_urrtn;\n    struct Buffer var_srgyx;\n    short var_kxrlm;\n\n    var_gjbbz = 784;\n    var_mvpow[0] = 958;\n    var_djoqz[0] = 447;\n    var_qyqpm[0].flag = 'S';\n    var_sfnwq[0] = 809;\n    var_zrtgs[0].id = 752;\n    var_qubat[0] = 525.42;\n    var_urrtn.flag = 'N';\n    var_srgyx.id = 637;\n    var_kxrlm = 309;\n    var_rowkb[0] = 640;\n\n    if (var_qubat[0] > -1) {\n        MYmywrite((void*)&var_qubat);\n    }\n    var_qubat[0] *= var_zrtgs[0].id;\n    baz((void*)&var_gjbbz);\n    foober((void*)&var_sfnwq);\n    if (var_urrtn.flag > -1) {\n        baz((void*)&var_urrtn);\n    }\n    var_kxrlm = var_rowkb[0] - 200;\n    foober((void*)&var_mvpow);\n    MYmywrite((void*)&var_qyqpm);\n    MYmyread((void*)&var_srgyx);\n    MYmywrite((void*)&var_djoqz);\n    MYmywrite((void*)&var_rowkb);\n}\n\nvoid synth_func_2() {\n    struct DataNode var_iyxbw[356];\n    float var_gmakd[422];\n    short var_njnra[183];\n    int var_fwnji[365];\n    struct DataNode var_xqnts[498];\n    char var_xvuss[228];\n    long var_wuaid;\n    double var_gqrrx;\n    struct Point var_kokpb;\n    volatile float var_hyups;\n\n    var_iyxbw[0].flag = 'Q';\n    var_gmakd[0] = 737.86;\n    var_njnra[0] = 157;\n    var_wuaid = 296;\n    var_gqrrx = 977.50;\n    var_fwnji[0] = 376;\n    var_xqnts[0].flag = 'A';\n    var_xvuss[0] = 'L';\n    var_kokpb.x = 387;\n    var_hyups = 364.45;\n\n    foober((void*)&var_hyups);\n    if (var_iyxbw[0].flag > -1) {\n        foober((void*)&var_iyxbw);\n    }\n    if (var_wuaid > -1) {\n        MYmyread((void*)&var_wuaid);\n    }\n    MYmyread((void*)&var_gmakd);\n    bazz((void*)&var_xvuss);\n    if (var_gqrrx > -1) {\n        baz((void*)&var_gqrrx);\n    }\n    bazz((void*)&var_njnra);\n    var_njnra[0] -= var_gmakd[0];\n    var_kokpb.x = var_xvuss[0] - 11;\n    if (var_wuaid != 55) {\n        var_iyxbw[0].flag += 2;\n    } else {\n        var_iyxbw[0].flag -= 2;\n    }\n    if (var_fwnji[0] > -1) {\n        MYmywrite((void*)&var_fwnji);\n    }\n}\n\nvoid synth_func_3() {\n    struct DataNode var_dfjwb[380];\n    struct Buffer var_nejmw[428];\n    struct Point var_pyyae[132];\n    struct DataNode var_zdvhw[59];\n    short var_ityfr[318];\n    long var_nvjin;\n    volatile short var_jivji;\n    double var_tchne;\n    struct Point var_afbwh;\n    int var_qzjcc;\n    struct DataNode var_yqghd;\n\n    var_nvjin = 759;\n    var_jivji = 542;\n    var_dfjwb[0].flag = 'G';\n    var_nejmw[0].id = 164;\n    var_tchne = 96.29;\n    var_pyyae[0].x = 782;\n    var_zdvhw[0].flag = 'P';\n    var_afbwh.x = 479;\n    var_qzjcc = 704;\n    var_yqghd.flag = 'A';\n    var_ityfr[0] = 206;\n\n    if (var_nvjin > -1) {\n        MYmywrite((void*)&var_nvjin);\n    }\n    MYmywrite((void*)&var_nejmw);\n    if (var_dfjwb[0].flag == 96) {\n        var_zdvhw[0].flag += 8;\n    } else {\n        var_zdvhw[0].flag -= 8;\n    }\n    MYmyread((void*)&var_dfjwb);\n    for (var_yqghd.flag = 0; var_yqghd.flag < var_jivji; ++var_yqghd.flag) {\n        if (var_afbwh.x != 97) {\n            var_afbwh.x += 5;\n        } else {\n            var_afbwh.x -= 5;\n        }\n    }\n    if (var_ityfr[0] > -1) {\n        MYmyread((void*)&var_ityfr);\n    }\n    MYmyread((void*)&var_afbwh);\n    if (var_tchne > -1) {\n        MYmywrite((void*)&var_tchne);\n    }\n    var_nejmw[0].id = var_dfjwb[0].flag + 106;\n    bazz((void*)&var_jivji);\n    var_afbwh.x = var_pyyae[0].x + var_zdvhw[0].flag;\n    MYmyread((void*)&var_zdvhw);\n    if (var_jivji < 0) {\n        var_nejmw[0].id += 14;\n    } else {\n        var_nejmw[0].id -= 14;\n    }\n}\n\nvoid synth_func_4() {\n    struct Buffer var_xgbhn[106];\n    struct DataNode var_yzzjl[404];\n    char var_vawey;\n    short var_mxied;\n    struct Buffer var_ctypc;\n\n    var_vawey = 'K';\n    var_xgbhn[0].id = 714;\n    var_mxied = 479;\n    var_ctypc.id = 982;\n    var_yzzjl[0].flag = 'V';\n\n    MYmyread((void*)&var_mxied);\n    if (var_vawey > -1) {\n        foober((void*)&var_vawey);\n    }\n    baz((void*)&var_ctypc);\n    if (var_xgbhn[0].id != 24) {\n        var_yzzjl[0].flag += 7;\n    } else {\n        var_yzzjl[0].flag -= 7;\n    }\n    if (var_ctypc.id == 43) {\n        var_xgbhn[0].id += 13;\n    } else {\n        var_xgbhn[0].id -= 13;\n    }\n    var_ctypc.id = var_yzzjl[0].flag * var_xgbhn[0].id;\n    var_yzzjl[0].flag *= var_vawey;\n    foober((void*)&var_yzzjl);\n    if (var_xgbhn[0].id > -1) {\n        MYmyread((void*)&var_xgbhn);\n    }\n    var_vawey *= 182;\n}\n\nvoid synth_func_5() {\n    long var_wolku[87];\n    double var_ruhsx[222];\n    char var_ukblq[134];\n    short var_hxlul[297];\n    float var_dkmkw[118];\n    struct Buffer var_dpqlc[482];\n    short var_goghe;\n    int var_kjkdj;\n\n    var_wolku[0] = 381;\n    var_ruhsx[0] = 393.14;\n    var_ukblq[0] = 'E';\n    var_hxlul[0] = 591;\n    var_goghe = 853;\n    var_dkmkw[0] = 391.96;\n    var_dpqlc[0].id = 654;\n    var_kjkdj = 988;\n\n    var_goghe += var_wolku[0];\n    var_wolku[0] = var_dkmkw[0] * var_ukblq[0];\n    if (var_hxlul[0] > -1) {\n        MYmywrite((void*)&var_hxlul);\n    }\n    if (var_dpqlc[0].id < 28) {\n        var_wolku[0] += 12;\n    } else {\n        var_wolku[0] -= 12;\n    }\n    if (var_wolku[0] > -1) {\n        foober((void*)&var_wolku);\n    }\n    var_ukblq[0] = var_ruhsx[0] * 31;\n    foober((void*)&var_kjkdj);\n    MYmyread((void*)&var_dpqlc);\n    foober((void*)&var_ukblq);\n}\n",
+    "source_code_c": "#include <stdio.h>\n#include <stdlib.h>\n\nstruct Point {\n    int x;\n    int y;\n};\nstruct DataNode {\n    char flag;\n    double value;\n};\nstruct Buffer {\n    int id;\n    char buf[12];\n};\n\nvoid baz(void*);\nvoid foober(void*);\nvoid MYmyread(void*);\nvoid MYmywrite(void*);\nvoid bazz(void*);\n\n\nvoid synth_func_0() {\n    long var_mjcyw[232];\n    double var_dkcrn[495];\n    int var_hnaqo[223];\n    struct Point var_rxhpm[100];\n    struct Buffer var_mnrxm, var_znees, var_byuch;\n    char var_tfpci;\n    struct Point var_glrxf;\n    int var_ixwlj;\n\n    var_mjcyw[0] = 951;\n    var_dkcrn[0] = 102.85;\n    var_mnrxm.id = 54;\n    var_znees.id = 810;\n    var_tfpci = 'H';\n    var_glrxf.x = 433;\n    var_byuch.id = 749;\n    var_hnaqo[0] = 502;\n    var_rxhpm[0].x = 917;\n    var_ixwlj = 767;\n\n    if (var_rxhpm[0].x > -1) {\n        foober((void*)&var_rxhpm);\n    }\n    var_mnrxm.id = var_znees.id - var_dkcrn[0];\n    var_mjcyw[0] -= var_dkcrn[0];\n    foober((void*)&var_dkcrn);\n    if (var_glrxf.x > -1) {\n        MYmywrite((void*)&var_glrxf);\n    }\n    foober((void*)&var_byuch);\n    foober((void*)&var_ixwlj);\n    foober((void*)&var_mnrxm);\n    if (var_hnaqo[0] > -1) {\n        foober((void*)&var_hnaqo);\n    }\n    for (var_tfpci = 0; var_tfpci < var_znees.id; ++var_tfpci) {\n        if (var_tfpci == 7) {\n            var_tfpci += 1;\n        } else {\n            var_tfpci -= 1;\n        }\n    }\n    baz((void*)&var_tfpci);\n}\n\nvoid synth_func_1() {\n    struct DataNode var_jdpip[87];\n    int var_dsine[311];\n    int var_wwctx[508];\n    int var_ugvpv[383];\n    float var_ruuvh[374];\n    struct Point var_bzfsj, var_kpljc, var_vgafk;\n    struct DataNode var_yucts;\n    char var_stddx;\n    int var_uintb;\n    long var_bwtjy;\n\n    var_jdpip[0].flag = 'B';\n    var_dsine[0] = 319;\n    var_bzfsj.x = 741;\n    var_kpljc.x = 881;\n    var_wwctx[0] = 224;\n    var_yucts.flag = 'Y';\n    var_stddx = 'I';\n    var_uintb = 597;\n    var_ugvpv[0] = 287;\n    var_bwtjy = 189;\n    var_ruuvh[0] = 18.18;\n    var_vgafk.x = 62;\n\n    foober((void*)&var_jdpip);\n    for (var_jdpip[0].flag = 0; var_jdpip[0].flag < var_dsine[0]; ++var_jdpip[0].flag) {\n        if (var_ugvpv[0] < 48) {\n            var_ugvpv[0] += 15;\n        } else {\n            var_ugvpv[0] -= 15;\n        }\n    }\n    foober((void*)&var_wwctx);\n    MYmywrite((void*)&var_ruuvh);\n    MYmyread((void*)&var_kpljc);\n    if (var_uintb != 53) {\n        var_dsine[0] += 12;\n    } else {\n        var_dsine[0] -= 12;\n    }\n    MYmyread((void*)&var_stddx);\n    foober((void*)&var_bzfsj);\n    MYmyread((void*)&var_ugvpv);\n    if (var_ugvpv[0] < 4) {\n        var_bwtjy += 9;\n    } else {\n        var_bwtjy -= 9;\n    }\n    var_yucts.flag = var_uintb * 43;\n    baz((void*)&var_bwtjy);\n    MYmywrite((void*)&var_uintb);\n    bazz((void*)&var_dsine);\n    MYmywrite((void*)&var_vgafk);\n    var_uintb = var_vgafk.x + 129;\n}\n\nvoid synth_func_2() {\n    struct Point var_yryyo[432];\n    struct DataNode var_ttjwz[60];\n    char var_pavxn[234];\n    struct Point var_xghfk[336];\n    long var_dvlfk[306];\n    char var_cwgyh;\n    float var_rjygd;\n    struct DataNode var_vwrdw;\n    long var_snodl;\n    volatile double var_jxkyp;\n    struct Point var_sdtol;\n\n    var_yryyo[0].x = 926;\n    var_ttjwz[0].flag = 'M';\n    var_cwgyh = 'E';\n    var_rjygd = 77.43;\n    var_pavxn[0] = 'H';\n    var_xghfk[0].x = 926;\n    var_vwrdw.flag = 'D';\n    var_snodl = 213;\n    var_dvlfk[0] = 505;\n    var_jxkyp = 950.85;\n    var_sdtol.x = 653;\n\n    foober((void*)&var_rjygd);\n    if (var_jxkyp == 46) {\n        var_vwrdw.flag += 10;\n    } else {\n        var_vwrdw.flag -= 10;\n    }\n    MYmyread((void*)&var_snodl);\n    MYmyread((void*)&var_ttjwz);\n    if (var_yryyo[0].x > -1) {\n        baz((void*)&var_yryyo);\n    }\n    MYmyread((void*)&var_pavxn);\n    baz((void*)&var_vwrdw);\n    if (var_cwgyh > -1) {\n        baz((void*)&var_cwgyh);\n    }\n    foober((void*)&var_xghfk);\n    MYmyread((void*)&var_jxkyp);\n    var_yryyo[0].x = var_rjygd - 102;\n    var_cwgyh += var_pavxn[0];\n}\n\nvoid synth_func_3() {\n    char var_gwkee[267];\n    struct DataNode var_aaidf;\n    int var_zusrz;\n    long var_kmdun;\n\n    var_aaidf.flag = 'K';\n    var_zusrz = 94;\n    var_kmdun = 274;\n    var_gwkee[0] = 'R';\n\n    MYmyread((void*)&var_kmdun);\n    if (var_aaidf.flag <= 81) {\n        var_gwkee[0] += 6;\n    } else {\n        var_gwkee[0] -= 6;\n    }\n    bazz((void*)&var_aaidf);\n    var_gwkee[0] = var_kmdun + 50;\n    var_zusrz = var_gwkee[0] * 10;\n    bazz((void*)&var_gwkee);\n    for (var_zusrz = 0; var_zusrz < var_aaidf.flag; ++var_zusrz) {\n        if (var_aaidf.flag >= 82) {\n            var_aaidf.flag += 2;\n        } else {\n            var_aaidf.flag -= 2;\n        }\n    }\n    var_aaidf.flag = var_gwkee[0] - var_kmdun;\n}\n\nvoid synth_func_4() {\n    short var_kezus[144];\n    double var_nvyuw[260];\n    struct Point var_vdpcv[29];\n    struct Buffer var_xxaii[493];\n    struct Point var_wfobe[433];\n    int var_rsyfe;\n    short var_pphur, var_spwoi;\n    struct DataNode var_dlhrm;\n    volatile long var_ljbzd;\n    struct Point var_fgsvy;\n\n    var_rsyfe = 356;\n    var_pphur = 116;\n    var_dlhrm.flag = 'O';\n    var_kezus[0] = 875;\n    var_ljbzd = 993;\n    var_nvyuw[0] = 38.90;\n    var_vdpcv[0].x = 698;\n    var_xxaii[0].id = 331;\n    var_wfobe[0].x = 562;\n    var_spwoi = 179;\n    var_fgsvy.x = 466;\n\n    bazz((void*)&var_rsyfe);\n    MYmywrite((void*)&var_wfobe);\n    foober((void*)&var_kezus);\n    if (var_xxaii[0].id > -1) {\n        MYmyread((void*)&var_xxaii);\n    }\n    MYmywrite((void*)&var_ljbzd);\n    MYmyread((void*)&var_spwoi);\n    MYmyread((void*)&var_pphur);\n    foober((void*)&var_fgsvy);\n    for (var_kezus[0] = 0; var_kezus[0] < var_spwoi; ++var_kezus[0]) {\n        if (var_dlhrm.flag >= 49) {\n            var_dlhrm.flag += 5;\n        } else {\n            var_dlhrm.flag -= 5;\n        }\n    }\n    bazz((void*)&var_vdpcv);\n    var_vdpcv[0].x = var_rsyfe - var_spwoi;\n    bazz((void*)&var_nvyuw);\n    if (var_dlhrm.flag > -1) {\n        foober((void*)&var_dlhrm);\n    }\n    var_nvyuw[0] = var_spwoi - var_vdpcv[0].x;\n}\n\nvoid synth_func_5() {\n    struct Buffer var_wigrl;\n    volatile int var_qnqsm;\n    double var_nlosm;\n    char var_thktd;\n    struct Point var_sryux, var_pijcr;\n\n    var_wigrl.id = 400;\n    var_qnqsm = 314;\n    var_nlosm = 937.63;\n    var_thktd = 'E';\n    var_sryux.x = 904;\n    var_pijcr.x = 794;\n\n    MYmywrite((void*)&var_nlosm);\n    for (var_qnqsm = 0; var_qnqsm < var_sryux.x; ++var_qnqsm) {\n        if (var_pijcr.x >= 82) {\n            var_pijcr.x += 2;\n        } else {\n            var_pijcr.x -= 2;\n        }\n    }\n    var_wigrl.id = var_qnqsm - var_sryux.x;\n    if (var_pijcr.x < 86) {\n        var_thktd += 13;\n    } else {\n        var_thktd -= 13;\n    }\n    bazz((void*)&var_qnqsm);\n    bazz((void*)&var_pijcr);\n    MYmywrite((void*)&var_sryux);\n    baz((void*)&var_wigrl);\n    var_sryux.x = var_pijcr.x * var_wigrl.id;\n    baz((void*)&var_thktd);\n}\n\nvoid synth_func_6() {\n    struct Buffer var_vrukw[33];\n    short var_cyjpy;\n    double var_gjiju, var_wlzrk, var_feaxp;\n    char var_rgvey;\n    int var_lawrt;\n    float var_ylavw;\n    struct Point var_rwzvp, var_gukeg, var_oyicb;\n    struct DataNode var_daeqq;\n\n    var_cyjpy = 256;\n    var_gjiju = 757.50;\n    var_vrukw[0].id = 899;\n    var_wlzrk = 968.83;\n    var_rgvey = 'Z';\n    var_feaxp = 997.18;\n    var_lawrt = 571;\n    var_ylavw = 939.15;\n    var_rwzvp.x = 159;\n    var_gukeg.x = 93;\n    var_oyicb.x = 491;\n    var_daeqq.flag = 'Q';\n\n    MYmyread((void*)&var_daeqq);\n    var_oyicb.x = var_ylavw * 159;\n    if (var_ylavw == 81) {\n        var_wlzrk += 4;\n    } else {\n        var_wlzrk -= 4;\n    }\n    bazz((void*)&var_gjiju);\n    var_rwzvp.x = var_vrukw[0].id * var_gjiju;\n    foober((void*)&var_oyicb);\n    if (var_ylavw > -1) {\n        foober((void*)&var_ylavw);\n    }\n    for (var_oyicb.x = 0; var_oyicb.x < var_lawrt; ++var_oyicb.x) {\n        if (var_wlzrk >= 19) {\n            var_wlzrk += 1;\n        } else {\n            var_wlzrk -= 1;\n        }\n    }\n    foober((void*)&var_vrukw);\n    foober((void*)&var_rgvey);\n    var_wlzrk = var_vrukw[0].id * var_feaxp;\n    baz((void*)&var_rwzvp);\n    bazz((void*)&var_cyjpy);\n    MYmywrite((void*)&var_feaxp);\n    foober((void*)&var_lawrt);\n    if (var_gukeg.x > -1) {\n        foober((void*)&var_gukeg);\n    }\n}\n\nvoid synth_func_7() {\n    int var_twwwb[145];\n    int var_plcrs[174];\n    struct DataNode var_plaph[346];\n    struct Buffer var_ppspp[440];\n    double var_mjmae[351];\n    int var_hjtao;\n    double var_xghgx, var_bpnpl;\n    float var_whtio;\n\n    var_twwwb[0] = 343;\n    var_plcrs[0] = 188;\n    var_plaph[0].flag = 'D';\n    var_ppspp[0].id = 309;\n    var_hjtao = 262;\n    var_mjmae[0] = 731.21;\n    var_xghgx = 163.12;\n    var_whtio = 474.08;\n    var_bpnpl = 172.91;\n\n    MYmywrite((void*)&var_plcrs);\n    MYmywrite((void*)&var_hjtao);\n    foober((void*)&var_plaph);\n    var_twwwb[0] = var_mjmae[0] * var_plaph[0].flag;\n    MYmyread((void*)&var_mjmae);\n    if (var_whtio != 34) {\n        var_ppspp[0].id += 15;\n    } else {\n        var_ppspp[0].id -= 15;\n    }\n    var_ppspp[0].id = var_xghgx + 109;\n    for (var_twwwb[0] = 0; var_twwwb[0] < var_plcrs[0]; ++var_twwwb[0]) {\n        if (var_bpnpl >= 99) {\n            var_bpnpl += 13;\n        } else {\n            var_bpnpl -= 13;\n        }\n    }\n    bazz((void*)&var_bpnpl);\n    MYmywrite((void*)&var_xghgx);\n    var_plaph[0].flag -= 171;\n    if (var_ppspp[0].id > -1) {\n        MYmywrite((void*)&var_ppspp);\n    }\n}\n",
     "assembly_code": "",
     "label": {
       "functions": [
@@ -10,18 +10,14 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_yrmxl",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            },
-            {
-              "variable_name": "var_okcut",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            }
+            {"variable_name": "var_dkcrn", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 3960},
+            {"variable_name": "var_mnrxm", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_tfpci", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1},
+            {"variable_name": "var_glrxf", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_byuch", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_hnaqo", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 892},
+            {"variable_name": "var_rxhpm", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 800},
+            {"variable_name": "var_ixwlj", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4}
           ]
         },
         {
@@ -29,60 +25,17 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_gjbbz",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            },
-            {
-              "variable_name": "var_mvpow",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1364
-            },
-            {
-              "variable_name": "var_djoqz",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 444
-            },
-            {
-              "variable_name": "var_qyqpm",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 2176
-            },
-            {
-              "variable_name": "var_sfnwq",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 474
-            },
-            {
-              "variable_name": "var_qubat",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1972
-            },
-            {
-              "variable_name": "var_urrtn",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 16
-            },
-            {
-              "variable_name": "var_srgyx",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 16
-            },
-            {
-              "variable_name": "var_rowkb",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1364
-            }
+            {"variable_name": "var_jdpip", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1392},
+            {"variable_name": "var_dsine", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1244},
+            {"variable_name": "var_bzfsj", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_kpljc", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_wwctx", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2032},
+            {"variable_name": "var_stddx", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1},
+            {"variable_name": "var_uintb", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_ugvpv", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1532},
+            {"variable_name": "var_bwtjy", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_ruuvh", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1496},
+            {"variable_name": "var_vgafk", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8}
           ]
         },
         {
@@ -90,54 +43,15 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_iyxbw",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 5696
-            },
-            {
-              "variable_name": "var_gmakd",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1688
-            },
-            {
-              "variable_name": "var_njnra",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 366
-            },
-            {
-              "variable_name": "var_wuaid",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            },
-            {
-              "variable_name": "var_gqrrx",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 8
-            },
-            {
-              "variable_name": "var_fwnji",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1460
-            },
-            {
-              "variable_name": "var_xvuss",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 228
-            },
-            {
-              "variable_name": "var_hyups",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            }
+            {"variable_name": "var_yryyo", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 3456},
+            {"variable_name": "var_ttjwz", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 960},
+            {"variable_name": "var_cwgyh", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1},
+            {"variable_name": "var_rjygd", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_pavxn", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 234},
+            {"variable_name": "var_xghfk", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2688},
+            {"variable_name": "var_vwrdw", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_snodl", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_jxkyp", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8}
           ]
         },
         {
@@ -145,54 +59,9 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_nvjin",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            },
-            {
-              "variable_name": "var_jivji",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 2
-            },
-            {
-              "variable_name": "var_dfjwb",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 6080
-            },
-            {
-              "variable_name": "var_nejmw",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 6848
-            },
-            {
-              "variable_name": "var_tchne",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 8
-            },
-            {
-              "variable_name": "var_zdvhw",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 944
-            },
-            {
-              "variable_name": "var_afbwh",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 8
-            },
-            {
-              "variable_name": "var_ityfr",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 636
-            }
+            {"variable_name": "var_aaidf", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_kmdun", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_gwkee", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 267}
           ]
         },
         {
@@ -200,36 +69,17 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_vawey",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1
-            },
-            {
-              "variable_name": "var_xgbhn",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 1696
-            },
-            {
-              "variable_name": "var_mxied",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 2
-            },
-            {
-              "variable_name": "var_ctypc",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 16
-            },
-            {
-              "variable_name": "var_yzzjl",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 6464
-            }
+            {"variable_name": "var_rsyfe", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_pphur", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2},
+            {"variable_name": "var_dlhrm", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_kezus", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 288},
+            {"variable_name": "var_ljbzd", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_nvyuw", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2080},
+            {"variable_name": "var_vdpcv", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 232},
+            {"variable_name": "var_xxaii", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 7888},
+            {"variable_name": "var_wfobe", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 3464},
+            {"variable_name": "var_spwoi", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2},
+            {"variable_name": "var_fgsvy", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8}
           ]
         },
         {
@@ -237,36 +87,44 @@
           "stack_allocation_instruction": null,
           "stack_allocation_size_bytes": null,
           "variable_mapping": [
-            {
-              "variable_name": "var_wolku",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 348
-            },
-            {
-              "variable_name": "var_ukblq",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 134
-            },
-            {
-              "variable_name": "var_hxlul",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 594
-            },
-            {
-              "variable_name": "var_dpqlc",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 7712
-            },
-            {
-              "variable_name": "var_kjkdj",
-              "assembly_reference": null,
-              "allocation_space_offset": null,
-              "size_bytes": 4
-            }
+            {"variable_name": "var_wigrl", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16},
+            {"variable_name": "var_qnqsm", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_nlosm", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_thktd", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1},
+            {"variable_name": "var_sryux", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_pijcr", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8}
+          ]
+        },
+        {
+          "function_name": "synth_func_6",
+          "stack_allocation_instruction": null,
+          "stack_allocation_size_bytes": null,
+          "variable_mapping": [
+            {"variable_name": "var_cyjpy", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2},
+            {"variable_name": "var_gjiju", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_vrukw", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 528},
+            {"variable_name": "var_rgvey", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 1},
+            {"variable_name": "var_feaxp", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_lawrt", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_ylavw", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_rwzvp", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_gukeg", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_oyicb", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_daeqq", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 16}
+          ]
+        },
+        {
+          "function_name": "synth_func_7",
+          "stack_allocation_instruction": null,
+          "stack_allocation_size_bytes": null,
+          "variable_mapping": [
+            {"variable_name": "var_plcrs", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 696},
+            {"variable_name": "var_plaph", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 5536},
+            {"variable_name": "var_ppspp", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 7040},
+            {"variable_name": "var_hjtao", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 4},
+            {"variable_name": "var_mjmae", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 2808},
+            {"variable_name": "var_xghgx", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8},
+            {"variable_name": "var_bpnpl", "assembly_reference": null, "allocation_space_offset": null, "size_bytes": 8}
           ]
         }
       ]
