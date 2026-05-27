@@ -5,12 +5,26 @@ import random
 import string
 from collections import defaultdict
 from tqdm import tqdm
+import json
 
 LOGGER = logging.getLogger(__name__)
+
+# Directory names
+SOURCE_C_CODE_DIR = "source_codes"
 
 # --- CONFIGURATION & TEMPLATES ---
 C_TYPES = ["int", "char", "short", "double", "float", "long"]
 OPAQUE_SINKS = ["baz", "foober", "MYmyread", "MYmywrite", "bazz"]
+
+# Borland 32-bit type sizes
+TYPE_SIZES = {
+    "char": 1,
+    "short": 2,
+    "int": 4,
+    "long": 4,
+    "float": 4,
+    "double": 8
+}
 
 # Hyper-parameters
 # PER FUNCTION
@@ -96,6 +110,7 @@ def generate_function_body(func_id:int) -> str:
         v_name = get_rand_name()
         is_array = random.random() < IS_ARRAY_PROB_THRESHOLD
         is_ghost_variable = random.random() > NOISE_GHOST_VARS_PROB
+        array_size = 0
 
         if is_array:
             array_size = random.randint(MIN_ARRAY_SIZE, MAX_ARRAY_SIZE)
@@ -103,7 +118,7 @@ def generate_function_body(func_id:int) -> str:
         else:
             var_info_map[v_type].append(v_name)
         
-        all_vars.append([v_type, v_name, is_array, is_ghost_variable])
+        all_vars.append([v_type, v_name, is_array, is_ghost_variable, array_size])
     
     for var_type, var_name in var_info_map.items():
         vol = "volatile " if random.random() > VOLATILE_THRESHOLD else ""
@@ -119,7 +134,7 @@ def generate_function_body(func_id:int) -> str:
     lines.append("")
 
     # Step 2: Dummy assignments
-    for var_type, var_name, is_array, is_ghost_variable in all_vars:
+    for var_type, var_name, is_array, _, _ in all_vars:
         if is_array:
             lines.append(f"    {var_name}[0] = {generate_random_val(var_type)};")
         else:
@@ -210,14 +225,29 @@ def generate_function_body(func_id:int) -> str:
                     curr_lines.append(f"        }}")
                     curr_lines.append(f"    }}")
                     grouped_lines.append(curr_lines)
+    
+    # Step 4: Store the function meta data for labelling
+    function_meta_data = {
+        "function_name": func_name,
+        "stack_allocation_instruction": None, # Will leave it later for predicting
+        "stack_allocation_size_bytes": None, # But we can predict this
+        "variable_mapping": []
+    }
 
-    # Step 4: the escapes - taking address
-    for _, v_name, is_array, is_ghost_variable in all_vars:
+    # Step 5: the escapes - taking address
+    for v_type, v_name, is_array, is_ghost_variable, array_size in all_vars:
         if is_ghost_variable:
             continue
         grouped_lines.append(add_escape(v_name, is_array))
+
+        function_meta_data["variable_mapping"].append({
+            "variable_name": v_name,
+            "assembly_reference": None,
+            "allocation_space_offset": None,
+            "size_bytes": TYPE_SIZES[v_type]*array_size if is_array else TYPE_SIZES[v_type]
+        })
     
-    # Step 5: Suffle all groups and re-create the function
+    # Step 6: Suffle all groups and re-create the function
     random.shuffle(grouped_lines)
 
     for group in grouped_lines:
@@ -225,7 +255,7 @@ def generate_function_body(func_id:int) -> str:
             lines.append(line)
 
     lines.append("}\n")
-    return "\n".join(lines)
+    return "\n".join(lines), function_meta_data
 
 def generate_c_code(file_id:int, max_random_func:int) -> str:
 
@@ -239,34 +269,58 @@ def generate_c_code(file_id:int, max_random_func:int) -> str:
         lines.append(f"void {sink}(void*);")
     lines.append("\n")
 
+    file_label = {
+        "file_id": file_id,
+        "source_code_c": "", 
+        "assembly_code": "", # Empty, ready for parsing script
+        "label": {
+            "functions": []
+        }
+    }
+
     # Step 2. Randomize how many functions are in this specific C file (e.g., 1 to 10)
     num_functions = random.randint(1, max_random_func)
     for i in range(num_functions):
         # Pass a unique ID for the function name
-        lines.append(generate_function_body(func_id=i))
+        function_code, function_meta_data = generate_function_body(func_id=i)
+        lines.append(function_code)
+        file_label["label"]["functions"].append(function_meta_data)
 
-    return "\n".join(lines)
+    return "\n".join(lines), file_label
 
 if __name__ == "__main__":
     args = parse_args()
     setup_logger(args.log_level)
 
     os.makedirs(args.output_dir, exist_ok=True)
-
+    source_code_dir = os.path.join(args.output_dir, SOURCE_C_CODE_DIR)
+    os.makedirs(source_code_dir, exist_ok=True)
     LOGGER.info("Generating samples for %d", args.num_samples)
     
     success_count = 0
+    dataset_records = []
     for i in tqdm(range(args.num_samples), desc="Generating samples"):
-        file_path = os.path.join(args.output_dir, f"sample_{i:05d}.c")
+        file_path = os.path.join(source_code_dir, f"sample_{i:05d}.c")
 
         try:
-            c_code = generate_c_code(i, args.max_random_func)
+            c_code, file_label_data = generate_c_code(i, args.max_random_func)
 
             with open(file_path, "w") as f:
                 f.write(c_code)
             
+            # Save metadata to dataset array
+            dataset_records.append(file_label_data)
             success_count += 1
         except IOError as e:
             LOGGER.error("Failed to generate c code to %s : %s", file_path, e)
+
+    # Final step : Output the JSON Ground Truth File
+    json_path = os.path.join(args.output_dir, "dataset_labels.json")
+    try:
+        with open(json_path, "w") as jf:
+            json.dump(dataset_records, jf, indent=2)
+        LOGGER.info("Successfully saved ground truth JSON to %s", json_path)
+    except IOError as e:
+        LOGGER.error("Failed to save JSON file: %s", e)
     
-    LOGGER.info("Successfully generated %d C programs and saved to %s", success_count, args.output_dir)
+    LOGGER.info("Successfully generated %d C programs and saved to %s", success_count, source_code_dir)
