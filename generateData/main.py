@@ -26,6 +26,30 @@ TYPE_SIZES = {
     "double": 8
 }
 
+# Struct Templates (Hardcoded to guarantee perfect size calculations despite C padding rules)
+STRUCT_DEFS = {
+    "struct Point": {
+        "decl": "struct Point {\n    int x;\n    int y;\n};",
+        "size": 8,
+        "first_field": "x",
+        "first_field_type": "int"
+    },
+    "struct DataNode": {
+        "decl": "struct DataNode {\n    char flag;\n    double value;\n};",
+        "size": 16, # 1 byte char + 7 bytes padding + 8 bytes double = 16 bytes
+        "first_field": "flag",
+        "first_field_type": "char"
+    },
+    "struct Buffer": {
+        "decl": "struct Buffer {\n    int id;\n    char buf[12];\n};",
+        "size": 16, # 4 byte int + 12 byte array = 16 bytes
+        "first_field": "id",
+        "first_field_type": "int"
+    }
+}
+
+ALL_TYPES = C_TYPES + list(STRUCT_DEFS.keys())
+
 # Hyper-parameters
 # PER FUNCTION
 MIN_NUM_HOIST_DECL = 4
@@ -76,13 +100,14 @@ def generate_random_val(v_type: str) -> str:
     else:
         return str(random.randint(0, 1000))
 
-def add_escape(v_name, is_array):
+def add_escape(v_name, is_array, actual_field_name):
     sink = random.choice(OPAQUE_SINKS)
 
     curr_lines = []
 
     if random.random() > OPAQUE_SINK_THRESHOLD:
         condition_target = f"{v_name}[0]" if is_array else v_name
+        condition_target = f"{condition_target}.{actual_field_name}" if actual_field_name else condition_target # For struct variables
         curr_lines.append(f"    if ({condition_target} > -1) {{")
         curr_lines.append(f"        {sink}((void*)&{v_name});")
         curr_lines.append("    }")
@@ -90,8 +115,7 @@ def add_escape(v_name, is_array):
         curr_lines.append(f"    {sink}((void*)&{v_name});")
     return curr_lines
 
-def generate_function_body(func_id:int) -> str:
-    """Generates the code for a single C function."""
+def generate_function_body(func_id:int) -> tuple[str, dict]:
     lines = []
     
     func_name = f"synth_func_{func_id}"
@@ -105,8 +129,7 @@ def generate_function_body(func_id:int) -> str:
     all_vars = []
 
     for var_id in range(num_vars):
-        # randomly choose one datatype for var_id from C_TYPES
-        v_type = random.choice(C_TYPES)
+        v_type = random.choice(ALL_TYPES) # Now includes structs
         v_name = get_rand_name()
         is_array = random.random() < IS_ARRAY_PROB_THRESHOLD
         is_ghost_variable = random.random() > NOISE_GHOST_VARS_PROB
@@ -135,10 +158,19 @@ def generate_function_body(func_id:int) -> str:
 
     # Step 2: Dummy assignments
     for var_type, var_name, is_array, _, _ in all_vars:
-        if is_array:
-            lines.append(f"    {var_name}[0] = {generate_random_val(var_type)};")
+        # If it's a struct, we assign to its first field to avoid C syntax errors
+        if var_type in STRUCT_DEFS:
+            field = STRUCT_DEFS[var_type]["first_field"]
+            f_type = STRUCT_DEFS[var_type]["first_field_type"]
+            if is_array:
+                lines.append(f"    {var_name}[0].{field} = {generate_random_val(f_type)};")
+            else:
+                lines.append(f"    {var_name}.{field} = {generate_random_val(f_type)};")
         else:
-            lines.append(f"    {var_name} = {generate_random_val(var_type)};")
+            if is_array:
+                lines.append(f"    {var_name}[0] = {generate_random_val(var_type)};")
+            else:
+                lines.append(f"    {var_name} = {generate_random_val(var_type)};")
     
     lines.append("")
     # This will be useful in step 3 and step 4 for more generality
@@ -151,8 +183,24 @@ def generate_function_body(func_id:int) -> str:
     REL_OPS = ["<", ">", "<=", ">=", "!=", "=="] # Added relational operators
     INT_TYPES = ["int", "short", "long", "char"]
 
-    all_scalers = [v for v in all_vars if not v[2] and v[0] in C_TYPES]
-    int_scalars = [v for v in all_vars if not v[2] and v[0] in INT_TYPES]
+    noise_candidates = []
+    for v in all_vars:
+        v_type, v_name, is_array, _, _ = v
+        
+        # 1. Get the actual underlying data type (primitive vs struct field)
+        actual_type = STRUCT_DEFS[v_type]["first_field_type"] if v_type in STRUCT_DEFS else v_type
+        
+        # 2. Build the proper C access string
+        access_str = f"{v_name}[0]" if is_array else v_name
+        if v_type in STRUCT_DEFS:
+            access_str += f".{STRUCT_DEFS[v_type]['first_field']}"
+            
+        # Store as [actual_type, access_string] so your downstream v[1] calls work perfectly!
+        noise_candidates.append([actual_type, access_str])
+
+    # Now ALL variables (arrays, structs, primitives) can participate in noise!
+    all_scalers = noise_candidates
+    int_scalars = [v for v in noise_candidates if v[0] in INT_TYPES]
 
     if len(all_scalers)  >= 2:
         noisy_blocks = random.randint(1, MAX_NOISE_BLOCKS)
@@ -164,10 +212,7 @@ def generate_function_body(func_id:int) -> str:
             if available_sources:
                 source_var = random.choice(available_sources)
                 ops_selected = random.choice(OPS)
-                available_sources_3rd_var = [
-                    v for v in all_scalers
-                    if v[1] not in {target_var[1], source_var[1]}
-                ]
+                available_sources_3rd_var = [v for v in all_scalers if v[1] not in {target_var[1], source_var[1]}]
 
                 if random.random() > THIRD_VAR_BEING_CONST_PROB or not available_sources_3rd_var:
                     third_var = random.randint(1, 200)
@@ -230,7 +275,7 @@ def generate_function_body(func_id:int) -> str:
     function_meta_data = {
         "function_name": func_name,
         "stack_allocation_instruction": None, # Will leave it later for predicting
-        "stack_allocation_size_bytes": None, # But we can predict this
+        "stack_allocation_size_bytes": None, # ||
         "variable_mapping": []
     }
 
@@ -238,13 +283,18 @@ def generate_function_body(func_id:int) -> str:
     for v_type, v_name, is_array, is_ghost_variable, array_size in all_vars:
         if is_ghost_variable:
             continue
-        grouped_lines.append(add_escape(v_name, is_array))
+        actual_field_name = STRUCT_DEFS[v_type]["first_field"] if v_type in STRUCT_DEFS else None
+        grouped_lines.append(add_escape(v_name, is_array, actual_field_name))
+
+        # Size logic mapping
+        base_size = STRUCT_DEFS[v_type]["size"] if v_type in STRUCT_DEFS else TYPE_SIZES[v_type]
+        final_size = base_size * array_size if is_array else base_size
 
         function_meta_data["variable_mapping"].append({
             "variable_name": v_name,
             "assembly_reference": None,
             "allocation_space_offset": None,
-            "size_bytes": TYPE_SIZES[v_type]*array_size if is_array else TYPE_SIZES[v_type]
+            "size_bytes": final_size
         })
     
     # Step 6: Suffle all groups and re-create the function
@@ -257,14 +307,18 @@ def generate_function_body(func_id:int) -> str:
     lines.append("}\n")
     return "\n".join(lines), function_meta_data
 
-def generate_c_code(file_id:int, max_random_func:int) -> str:
-
+def generate_c_code(file_id:int, max_random_func:int) -> tuple[str, dict]:
     lines = []
 
     lines.append("#include <stdio.h>")
     lines.append("#include <stdlib.h>\n")
 
-    # Step 1. Provide opaque function prototypes at the top of the file
+    # Inject Struct Definitions globally
+    for s_def in STRUCT_DEFS.values():
+        lines.append(s_def["decl"])
+    lines.append("")
+
+    # Provide opaque function prototypes
     for sink in OPAQUE_SINKS:
         lines.append(f"void {sink}(void*);")
     lines.append("\n")
@@ -286,7 +340,10 @@ def generate_c_code(file_id:int, max_random_func:int) -> str:
         lines.append(function_code)
         file_label["label"]["functions"].append(function_meta_data)
 
-    return "\n".join(lines), file_label
+    final_c_code = "\n".join(lines)
+    file_label["source_code_c"] = final_c_code
+
+    return final_c_code, file_label
 
 if __name__ == "__main__":
     args = parse_args()
