@@ -13,5 +13,5 @@
 #     --json_path ./data/dataset_labels.json
 # this saves the data to ./data/dataset_labels_sanitized.json
 
-python -m generateData.train_test_split \
+python -m generateData.train_val_split \
     --json_path ./data/dataset_labels_sanitized.json
