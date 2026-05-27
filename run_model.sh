@@ -9,9 +9,10 @@
 # python -m generateData.parse_labels \
 #     --json_path ./data/dataset_labels.json
 
+# this saves the data to ./data/dataset_labels_sanitized.json
 # python -m generateData.stripping_debug_asm_lines \
 #     --json_path ./data/dataset_labels.json
-# this saves the data to ./data/dataset_labels_sanitized.json
 
+# this splits the data to ./data/dataset_train.json and ./data/dataset_val.json 
 python -m generateData.train_val_split \
     --json_path ./data/dataset_labels_sanitized.json
