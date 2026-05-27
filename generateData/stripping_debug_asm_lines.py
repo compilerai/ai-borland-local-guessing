@@ -4,7 +4,11 @@ import logging
 import os
 from tqdm import tqdm
 
+from utils.json_utils import save_compact_json
+
 LOGGER = logging.getLogger(__name__)
+
+OUTPUT_PATH_EXTENTION = "_sanitized.json"
 
 def setup_logger():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
@@ -51,12 +55,13 @@ def main():
         if raw_asm:
             record["assembly_code"] = strip_debug_artifacts(raw_asm)
 
-    output_path = args.json_path.replace(".json", "_sanitized.json")
+    output_path = args.json_path.replace(".json", OUTPUT_PATH_EXTENTION)
     LOGGER.info("Saving sanitized dataset to %s...", output_path)
     
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(dataset, f, indent=2)
-        
+    
+    save_compact_json(dataset, output_path, LOGGER)
     LOGGER.info("Dataset sanitized and ready for the neural network!")
 
 if __name__ == "__main__":
