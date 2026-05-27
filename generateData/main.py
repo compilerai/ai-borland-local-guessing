@@ -7,6 +7,7 @@ from collections import defaultdict
 from tqdm import tqdm
 import json
 import uuid
+import re
 
 LOGGER = logging.getLogger(__name__)
 
@@ -377,28 +378,41 @@ if __name__ == "__main__":
     try:
         placeholders = {}
         
-        # 1. Convert only the inner dictionaries to single-line JSON strings and swap them for unique placeholders
-        for record in dataset_records:
+        # 1. Convert inner dictionaries, tracked with tqdm
+        for record in tqdm(dataset_records, desc="Formatting variable mapping strings"):
             for func in record["label"]["functions"]:
                 new_mappings = []
                 for mapping in func["variable_mapping"]:
-                    # Dump just this object to a compact, single-line string with nice spacing
                     compact_str = json.dumps(mapping, separators=(', ', ': '))
-                    # Generate a unique placeholder ID
                     ph = f"__VAR_MAPPING_{uuid.uuid4().hex}__"
                     placeholders[ph] = compact_str
                     new_mappings.append(ph)
                 func["variable_mapping"] = new_mappings
         
-        # 2. Dump the main JSON with standard indentation
+        LOGGER.info("Serializing main JSON structure...")
+        # 2. Dump the main JSON with standard indentation (this is fast, C-optimized)
         raw_json = json.dumps(dataset_records, indent=2)
         
-        # 3. Swap the stringified placeholders back to the raw JSON objects
-        for ph, compact_str in placeholders.items():
-            # Replace the string literal (including the quotes) with the actual JSON object string
-            raw_json = raw_json.replace(f'"{ph}"', compact_str)
+        # 3. Swap placeholders back using a highly-optimized SINGLE-PASS Regex
+        # Compile a pattern that exactly matches the stringified placeholder (including the quotes)
+        pattern = re.compile(r'"__VAR_MAPPING_[0-9a-f]{32}__"')
+        
+        # Set up a progress bar for the replacement phase
+        pbar = tqdm(total=len(placeholders), desc="Swapping compact JSON blocks")
+        
+        def replacer(match):
+            pbar.update(1)
+            # match.group(0) includes the quotes, e.g. '"__VAR_MAPPING_abc123__"'
+            # We strip them to look up the clean key in our dictionary
+            ph_key = match.group(0).strip('"')
+            return placeholders[ph_key]
+            
+        # Execute the single-pass replacement
+        raw_json = pattern.sub(replacer, raw_json)
+        pbar.close()
             
         # 4. Write perfectly formatted file
+        LOGGER.info("Writing JSON to disk...")
         with open(json_path, "w") as jf:
             jf.write(raw_json)
             
