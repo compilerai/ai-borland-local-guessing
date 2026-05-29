@@ -19,12 +19,14 @@
 # python -m generateData.train_val_split \
 #     --json_path ./data/dataset_labels_sanitized.json
 
+# python -m generateData.slice_data
+
 # Stage 2 : LLM Finetuning
 
 # this will store model and LORA adapters inside output_dir/models and output_dir/LORA_adapter 
 python -m LLM_fine_tuning.train \
     --model_name Qwen/Qwen2.5-Coder-7B \
-    --dataset_path ./data/dataset_train.json \
+    --dataset_path ./data/dataset_train_small.json \
     --val_dataset_path ./data/dataset_val.json \
     --output_dir ./output_LLM_part_Qwen7B
 
