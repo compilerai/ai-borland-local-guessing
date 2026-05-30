@@ -50,3 +50,5 @@ python -m LLM_fine_tuning.train \
 #     --train_examples 13211 \
 #     --warmup_steps 5 \
 #     --measure_steps 20
+
+# python dummy_checks/plot_metric.py 
