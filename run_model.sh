@@ -26,21 +26,19 @@ export TOKENIZERS_PARALLELISM=false
 # Stage 2 : LLM Finetuning
 
 # this will store model and LORA adapters inside output_dir/models and output_dir/LORA_adapter 
-python -m LLM_fine_tuning.train \
-    --model_name Qwen/Qwen2.5-Coder-7B \
-    --dataset_path ./data/dataset_train_small.json \
-    --val_dataset_path ./data/dataset_val_small.json \
-    --output_dir ./output_LLM_part_Qwen7B
+# python -m LLM_fine_tuning.train \
+#     --model_name Qwen/Qwen2.5-Coder-7B \
+#     --dataset_path ./data/dataset_train_small.json \
+#     --val_dataset_path ./data/dataset_val_small.json \
+#     --output_dir ./output_LLM_part_Qwen7B
 
 # this will pull model and LORA adapters inside output_dir/models and output_dir/LORA_adapter -> store the predictions inside output_dir/preds
-# python -m LLM_fine_tuning.infer \
-#     --model_dir ./output_LLM_part_Qwen7B \
-#     --dataset_path ./data/dataset_val.json \
-
-# # this will for eval
-# python -m LLM_fine_tuning.eval \
-#     --ground_truth ./data/dataset_val.json \
-#     --model_pred ./output_LLM_part_Qwen7B/preds
+python -m LLM_fine_tuning.infer \
+    --base_model Qwen/Qwen2.5-Coder-7B \
+    --adapter_dir ./output_LLM_part_Qwen7B \
+    --test_dataset_path ./data/dataset_val_small.json \
+    --output_results_json eval_validation_metrics.json \
+    --batch_size 16
 
 # python dummy_checks/benchmark_throughput.py \
 #     --model_name Qwen/Qwen2.5-Coder-7B \
