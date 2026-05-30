@@ -2,8 +2,8 @@ import json
 import random
 
 def main():
-    input_path = "./data/dataset_train.json"
-    output_path = "./data/dataset_train_small.json"
+    input_path = "./data/dataset_val.json"
+    output_path = "./data/dataset_val_small.json"
     keep_percentage = 0.30
 
     print(f"Loading {input_path}...")

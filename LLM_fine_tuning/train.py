@@ -61,6 +61,8 @@ def set_seed(seed: int = 42) -> None:
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
+def vram_used_gb():
+    return torch.cuda.memory_allocated() / 1e9
 
 def detect_dtype() -> torch.dtype:
     """
@@ -97,6 +99,10 @@ def main() -> None:
     LOGGER.info(f"Loading tokenizer: {args.model_name}")
     tokenizer = AutoTokenizer.from_pretrained(args.model_name, trust_remote_code=True)
 
+    lengths = [len(tokenizer.apply_chat_template(r["messages"], tokenize=True)) 
+            for r in train_dataset.select(range(500))]
+    LOGGER.info(f"Avg tokens/sample: {sum(lengths)/len(lengths):.0f}, max: {max(lengths)}")
+
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
         LOGGER.info("Set pad_token = eos_token")
@@ -114,6 +120,7 @@ def main() -> None:
     )
     # Disable caching during training (incompatible with gradient checkpointing)
     model.config.use_cache = False
+    LOGGER.info(f"  VRAM after model load : {vram_used_gb():.1f} GB")
 
     # 4. LoRA
     lora_config = LoraConfig(
@@ -163,6 +170,8 @@ def main() -> None:
 
         # Gradient checkpointing saves VRAM at a small throughput cost
         gradient_checkpointing=True,
+        # Fixes the use_reentrant warning
+        gradient_checkpointing_kwargs={"use_reentrant": False},
 
         # Logging
         logging_steps=config.logging_steps,
@@ -171,6 +180,10 @@ def main() -> None:
         # Reproducibility
         seed=args.seed,
         data_seed=args.seed,
+
+        # The Padding Trap Killers
+        group_by_length=True,       # Groups similar-length sequences together
+        dataloader_num_workers=4,   # Spins up CPU workers to handle sorting in parallel
     )
 
     # 6. Callbacks
