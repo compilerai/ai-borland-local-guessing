@@ -2,9 +2,9 @@
 
 export TOKENIZERS_PARALLELISM=false
 
-# python -m generateData.generate_c_programs --num_samples 10000 \
-#     --max_random_func 10 \
-#     --output_dir ./data
+python -m generateData.generate_c_programs --num_samples 10000 \
+    --max_random_func 10 \
+    --output_dir ./data
 
 # python -m generateData.map_assembly \
 #     --json_path ./data/dataset_labels.json \
@@ -33,12 +33,12 @@ export TOKENIZERS_PARALLELISM=false
 #     --output_dir ./output_LLM_part_Qwen7B
 
 # this will pull model and LORA adapters inside output_dir/models and output_dir/LORA_adapter -> store the predictions inside output_dir/preds
-python -m LLM_fine_tuning.infer \
-    --base_model Qwen/Qwen2.5-Coder-7B \
-    --adapter_dir ./output_LLM_part_Qwen7B \
-    --test_dataset_path ./data/dataset_val_small.json \
-    --output_results_json eval_validation_metrics.json \
-    --batch_size 16
+# python -m LLM_fine_tuning.infer \
+#     --base_model Qwen/Qwen2.5-Coder-7B \
+#     --adapter_dir ./output_LLM_part_Qwen7B \
+#     --test_dataset_path ./data/dataset_val_small.json \
+#     --output_results_json eval_validation_metrics.json \
+#     --batch_size 16
 
 # python dummy_checks/benchmark_throughput.py \
 #     --model_name Qwen/Qwen2.5-Coder-7B \
