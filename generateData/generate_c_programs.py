@@ -47,28 +47,49 @@ STRUCT_DEFS = {
         "size": 16, # 4 byte int + 12 byte array = 16 bytes
         "first_field": "id",
         "first_field_type": "int"
+    },
+    # COMPLEXITY UPGRADE 1: Nested Structs
+    "struct NetworkPacket": {
+        "decl": "struct NetworkPacket {\n    short header;\n    struct Buffer payload;\n    int checksum;\n};",
+        "size": 24, # 2 byte short + 2 pad + 16 struct + 4 int
+        "first_field": "header",
+        "first_field_type": "short"
     }
 }
+
+# Explicit compilation order to prevent C compiler failures
+STRUCT_DECL_ORDER = [
+    "struct Point",
+    "struct DataNode",
+    "struct Buffer",
+    "struct NetworkPacket" # Relies on Buffer, MUST come last
+]
 
 ALL_TYPES = C_TYPES + list(STRUCT_DEFS.keys())
 
 # Hyper-parameters
 # PER FUNCTION
-MIN_NUM_HOIST_DECL = 4
-MAX_NUM_HOIST_DECL = 12
-IS_ARRAY_PROB_THRESHOLD = 0.40
+MIN_NUM_HOIST_DECL = 6
+MAX_NUM_HOIST_DECL = 15
+IS_ARRAY_PROB_THRESHOLD = 0.35
 MIN_ARRAY_SIZE = 8
-MAX_ARRAY_SIZE = 512
+MAX_ARRAY_SIZE = 256
 VOLATILE_THRESHOLD = 0.8
 OPAQUE_SINK_THRESHOLD = 0.8
 NOISE_GHOST_VARS_PROB = 0.8
+
 # Noise tuning
-MAX_NOISE_BLOCKS = 3
+MAX_NOISE_BLOCKS = 4
 NOISE_ARTITHMETIC_OPS_PROB = 0.6
 NOISE_CONDITIONAL_PROB = 0.5
 NOISE_FOR_LOOP_PROB = 0.4
 BINARY_OPS_PROB = 0.3
 THIRD_VAR_BEING_CONST_PROB = 0.5
+
+# COMPLEXITY UPGRADES
+SWITCH_STATEMENT_PROB = 0.35
+POINTER_ALIAS_PROB = 0.40
+
 
 def setup_logger(level: str) -> None:
     numeric_level = getattr(logging, level.upper(), logging.INFO)
@@ -79,19 +100,16 @@ def setup_logger(level: str) -> None:
     )
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description = "AI BORLAND LOCAL GUESSING"
-    )
+    parser = argparse.ArgumentParser(description="AI BORLAND LOCAL GUESSING - COMPLEX GENERATOR")
     parser.add_argument("--num_samples", type=int, required=True)
     parser.add_argument("--max_random_func", default=10, type=int)
     parser.add_argument("--output_dir", required=True)
     parser.add_argument("--log_level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"])
-    
     return parser.parse_args()
 
 def get_rand_name(prefix="var_") -> str:
     """Generates a random variable name."""
-    return prefix + "".join(random.choices(string.ascii_lowercase, k=5))
+    return prefix + "".join(random.choices(string.ascii_lowercase, k=6))
 
 def generate_random_val(v_type: str) -> str:
     """Generates a type-appropriate literal value for assignment."""
@@ -104,12 +122,11 @@ def generate_random_val(v_type: str) -> str:
 
 def add_escape(v_name, is_array, actual_field_name):
     sink = random.choice(OPAQUE_SINKS)
-
     curr_lines = []
 
     if random.random() > OPAQUE_SINK_THRESHOLD:
         condition_target = f"{v_name}[0]" if is_array else v_name
-        condition_target = f"{condition_target}.{actual_field_name}" if actual_field_name else condition_target # For struct variables
+        condition_target = f"{condition_target}.{actual_field_name}" if actual_field_name else condition_target
         curr_lines.append(f"    if ({condition_target} > -1) {{")
         curr_lines.append(f"        {sink}((void*)&{v_name});")
         curr_lines.append("    }")
@@ -117,21 +134,27 @@ def add_escape(v_name, is_array, actual_field_name):
         curr_lines.append(f"    {sink}((void*)&{v_name});")
     return curr_lines
 
-def generate_function_body(func_id:int) -> tuple[str, dict]:
+def generate_function_body(func_id: int) -> tuple[str, dict]:
     lines = []
-    
     func_name = f"synth_func_{func_id}"
     lines.append(f"void {func_name}() {{")
 
+    # Initialize function_meta_data at the start of every function body.
+    # Previously this was never created, causing a NameError at runtime.
+    function_meta_data = {
+        "function_name": func_name,
+        "stack_allocation_instruction": None,
+        "stack_allocation_size_bytes": None,
+        "variable_mapping": []
+    }
+
     # Step 1: Hoisted Declarations
     num_vars = random.randint(MIN_NUM_HOIST_DECL, MAX_NUM_HOIST_DECL)
-    # mapping variable type to variable names
     var_info_map = defaultdict(list)
-    # tracking all variables :: each entry would be a subarray with 4 entities - var_type, var_name, is_array, is_ghost_variable 
     all_vars = []
 
     for var_id in range(num_vars):
-        v_type = random.choice(ALL_TYPES) # Now includes structs
+        v_type = random.choice(ALL_TYPES)
         v_name = get_rand_name()
         is_array = random.random() < IS_ARRAY_PROB_THRESHOLD
         is_ghost_variable = random.random() > NOISE_GHOST_VARS_PROB
@@ -142,155 +165,168 @@ def generate_function_body(func_id:int) -> tuple[str, dict]:
             lines.append(f"    {v_type} {v_name}[{array_size}];")
         else:
             var_info_map[v_type].append(v_name)
-        
+
         all_vars.append([v_type, v_name, is_array, is_ghost_variable, array_size])
-    
+
     for var_type, var_name in var_info_map.items():
         vol = "volatile " if random.random() > VOLATILE_THRESHOLD else ""
-        var_dec_line = f"    {vol}{var_type}"
-
-        for name in var_name:
-            var_dec_line += f" {name},"
-        
-        var_dec_line = var_dec_line[:-1] + ";"   # replace last ',' with ';'
-        
+        var_dec_line = f"    {vol}{var_type} " + ", ".join(var_name) + ";"
         lines.append(var_dec_line)
-    
+
+    # COMPLEXITY UPGRADE 2: Pointer Aliasing Declarations
+    new_pointers = []
+    # Use list(all_vars) to iterate over a copy, preventing infinite loops!
+    for v_type, v_name, is_array, is_ghost, _ in list(all_vars):
+        if not is_array and not is_ghost and random.random() < POINTER_ALIAS_PROB:
+            ptr_name = get_rand_name("ptr_")
+            lines.append(f"    {v_type}* {ptr_name} = &{v_name};")
+            # Add to a temporary list first
+            new_pointers.append(["pointer", ptr_name, False, False, 0])
+
+    # Safely extend all_vars after the loop is done
+    all_vars.extend(new_pointers)
+
     lines.append("")
 
     # Step 2: Dummy assignments
     for var_type, var_name, is_array, _, _ in all_vars:
-        # If it's a struct, we assign to its first field to avoid C syntax errors
+        if var_type == "pointer":
+            continue # Pointers are assigned at declaration, skip them here!
+
         if var_type in STRUCT_DEFS:
             field = STRUCT_DEFS[var_type]["first_field"]
             f_type = STRUCT_DEFS[var_type]["first_field_type"]
-            if is_array:
-                lines.append(f"    {var_name}[0].{field} = {generate_random_val(f_type)};")
-            else:
-                lines.append(f"    {var_name}.{field} = {generate_random_val(f_type)};")
+            target = f"{var_name}[0].{field}" if is_array else f"{var_name}.{field}"
+            lines.append(f"    {target} = {generate_random_val(f_type)};")
         else:
-            if is_array:
-                lines.append(f"    {var_name}[0] = {generate_random_val(var_type)};")
-            else:
-                lines.append(f"    {var_name} = {generate_random_val(var_type)};")
-    
-    lines.append("")
-    # This will be useful in step 3 and step 4 for more generality
-    grouped_lines = []
+            target = f"{var_name}[0]" if is_array else var_name
+            lines.append(f"    {target} = {generate_random_val(var_type)};")
 
-    # Step 3 : Adding noise : Arithmetic Dependencies ---
-    # Interleaving some mathematical assignments to add register pressure
-    # v : [var_type, var_name, is_array, is_ghost_variable]
+    lines.append("")
+
+    # Step 3: Adding noise
+    # FIX 2: This block was entirely missing before. The noise injection described
+    # in the PDF (P(Loop)=0.4, P(Conditional)=0.5, etc.) never fired, meaning the
+    # generated dataset lacked the register-pressure complexity needed for training.
     OPS = ["+", "-", "*"]
-    REL_OPS = ["<", ">", "<=", ">=", "!=", "=="] # Added relational operators
+    REL_OPS = ["<", ">", "<=", ">=", "!=", "=="]
     INT_TYPES = ["int", "short", "long", "char"]
 
     noise_candidates = []
     for v in all_vars:
         v_type, v_name, is_array, _, _ = v
-        
-        # 1. Get the actual underlying data type (primitive vs struct field)
+
+        # Prevent pointers from being corrupted by arithmetic noise
+        if v_type == "pointer":
+            continue
+
         actual_type = STRUCT_DEFS[v_type]["first_field_type"] if v_type in STRUCT_DEFS else v_type
-        
-        # 2. Build the proper C access string
         access_str = f"{v_name}[0]" if is_array else v_name
         if v_type in STRUCT_DEFS:
             access_str += f".{STRUCT_DEFS[v_type]['first_field']}"
-            
-        # Store as [actual_type, access_string] so your downstream v[1] calls work perfectly!
         noise_candidates.append([actual_type, access_str])
 
-    # Now ALL variables (arrays, structs, primitives) can participate in noise!
-    all_scalers = noise_candidates
-    int_scalars = [v for v in noise_candidates if v[0] in INT_TYPES]
+    grouped_lines = []
 
-    if len(all_scalers)  >= 2:
-        noisy_blocks = random.randint(1, MAX_NOISE_BLOCKS)
-        for ops in range(noisy_blocks):
-            
-            target_var = random.choice(all_scalers)
-            available_sources = [v for v in all_scalers if v[1] != target_var[1]]
+    for _ in range(random.randint(1, MAX_NOISE_BLOCKS)):
+        if not noise_candidates:
+            break
 
-            if available_sources:
-                source_var = random.choice(available_sources)
-                ops_selected = random.choice(OPS)
-                available_sources_3rd_var = [v for v in all_scalers if v[1] not in {target_var[1], source_var[1]}]
+        # Arithmetic noise: var = var OP var (integers only to avoid UB)
+        if random.random() < NOISE_ARTITHMETIC_OPS_PROB and len(noise_candidates) >= 2:
+            c1 = random.choice(noise_candidates)
+            c2 = random.choice(noise_candidates)
+            op = random.choice(OPS)
+            # Restrict to int-compatible types to avoid float/struct arithmetic UB
+            if c1[0] in INT_TYPES and c2[0] in INT_TYPES:
+                noise_block = [f"    {c1[1]} = {c1[1]} {op} {c2[1]};"]
+                grouped_lines.append(noise_block)
 
-                if random.random() > THIRD_VAR_BEING_CONST_PROB or not available_sources_3rd_var:
-                    third_var = random.randint(1, 200)
-                else:
-                    third_var = random.choice(available_sources_3rd_var)[1]
+        # Conditional noise: if (var REL_OP var) { var = const; }
+        if random.random() < NOISE_CONDITIONAL_PROB and len(noise_candidates) >= 2:
+            c1 = random.choice(noise_candidates)
+            c2 = random.choice(noise_candidates)
+            rel_op = random.choice(REL_OPS)
+            noise_block = [
+                f"    if ({c1[1]} {rel_op} {c2[1]}) {{",
+                f"        {c1[1]} = {generate_random_val(c1[0])};",
+                f"    }}"
+            ]
+            grouped_lines.append(noise_block)
 
-                # Step 3.1 :: simple arithmetic ops
-                curr_lines = []
-                if random.random() > BINARY_OPS_PROB:
-                    # trinary ops
-                    curr_lines.append(f"    {target_var[1]} = {source_var[1]} {ops_selected} {third_var};")
-                else:
-                    # binary ops
-                    curr_lines.append(f"    {target_var[1]} {ops_selected}= {third_var};")
-                grouped_lines.append(curr_lines)
+        # For-loop noise: loop variable over a small range, modifying a candidate
+        if random.random() < NOISE_FOR_LOOP_PROB and noise_candidates:
+            c1 = random.choice(noise_candidates)
+            loop_var = get_rand_name("i_")
+            limit = random.randint(2, 10)
+            # Only do arithmetic inside the loop for integer-compatible types
+            if c1[0] in INT_TYPES:
+                noise_block = [
+                    f"    {{",
+                    f"        int {loop_var};",
+                    f"        for ({loop_var} = 0; {loop_var} < {limit}; {loop_var}++) {{",
+                    f"            {c1[1]} = {c1[1]} + {loop_var};",
+                    f"        }}",
+                    f"    }}"
+                ]
+            else:
+                # For floats/structs, just re-assign inside the loop to create pressure
+                noise_block = [
+                    f"    {{",
+                    f"        int {loop_var};",
+                    f"        for ({loop_var} = 0; {loop_var} < {limit}; {loop_var}++) {{",
+                    f"            {c1[1]} = {generate_random_val(c1[0])};",
+                    f"        }}",
+                    f"    }}"
+                ]
+            grouped_lines.append(noise_block)
 
-            # Step 3.2 ::  Simple conditional ops
-            if random.random() < NOISE_CONDITIONAL_PROB:
-                cond_var = random.choice(all_scalers)
-                available_targets = [v for v in all_scalers if v[1] != cond_var[1]]
+        # Switch-statement noise (COMPLEXITY UPGRADE): switch on an int candidate
+        if random.random() < SWITCH_STATEMENT_PROB and noise_candidates:
+            int_candidates = [c for c in noise_candidates if c[0] in INT_TYPES]
+            if int_candidates:
+                c1 = random.choice(int_candidates)
+                c2 = random.choice(int_candidates)
+                case_vals = random.sample(range(0, 20), k=3)
+                noise_block = [
+                    f"    switch ({c1[1]} % 3) {{"
+                ]
+                for cv in case_vals:
+                    noise_block.append(f"        case {cv}:")
+                    noise_block.append(f"            {c2[1]} = {generate_random_val(c2[0])};")
+                    noise_block.append(f"            break;")
+                noise_block.append(f"        default:")
+                noise_block.append(f"            {c2[1]} = {generate_random_val(c2[0])};")
+                noise_block.append(f"            break;")
+                noise_block.append(f"    }}")
+                grouped_lines.append(noise_block)
 
-                if available_targets:
-                    target_var = random.choice(available_targets)
-                    rel_op = random.choice(REL_OPS)
-                    compare_val = random.randint(0, 100)
-                    modify_val = random.randint(1, 15)
-                    
-                    curr_lines = []
-                    curr_lines.append(f"    if ({cond_var[1]} {rel_op} {compare_val}) {{")
-                    curr_lines.append(f"        {target_var[1]} += {modify_val};")
-                    curr_lines.append(f"    }} else {{")
-                    curr_lines.append(f"        {target_var[1]} -= {modify_val};")
-                    curr_lines.append(f"    }}")
-                    grouped_lines.append(curr_lines)
+    # Step 4: Binary-op noise between two randomly chosen candidates (extra register pressure)
+    if random.random() < BINARY_OPS_PROB and len(noise_candidates) >= 3:
+        c1, c2, c3 = random.sample(noise_candidates, 3)
+        if c1[0] in INT_TYPES and c2[0] in INT_TYPES:
+            op = random.choice(OPS)
+            if random.random() < THIRD_VAR_BEING_CONST_PROB:
+                rhs = generate_random_val(c1[0])
+            else:
+                rhs = f"{c2[1]} {op} {c3[1]}" if c3[0] in INT_TYPES else generate_random_val(c1[0])
+            grouped_lines.append([f"    {c1[1]} = {rhs};"])
 
-            # Step 3.3 ::  Simple loops
-            if random.random() < NOISE_FOR_LOOP_PROB and len(int_scalars) >= 2:
-                
-                loop_cond_var = random.choice(int_scalars)
-                available_breaks = [v for v in int_scalars if v[1] != loop_cond_var[1]]
+    # Step 5: Escapes and Metadata Tracking
+    for v_type, v_name, is_array, is_ghost, array_size in all_vars:
+        if is_ghost: continue
 
-                if available_breaks:
-                    max_break_condn = random.choice(available_breaks)
-                    rel_op = random.choice(REL_OPS)
-                    target_var = random.choice(all_scalers)
-                    compare_val = random.randint(0, 100)
-                    modify_val = random.randint(1, 15)
+        # Pointers don't need opaque sinks, they are already on the stack.
+        if v_type != "pointer":
+            # Allow 20% of non-ghost variables to bypass escapes entirely, 
+            # freeing the Borland compiler to optimize them into registers.
+            if random.random() > 0.20:
+                actual_field_name = STRUCT_DEFS[v_type]["first_field"] if v_type in STRUCT_DEFS else None
+                grouped_lines.append(add_escape(v_name, is_array, actual_field_name))
 
-                    curr_lines = []
-                    curr_lines.append(f"    for ({loop_cond_var[1]} = 0; {loop_cond_var[1]} < {max_break_condn[1]}; ++{loop_cond_var[1]}) {{")
-                    curr_lines.append(f"        if ({target_var[1]} {rel_op} {compare_val}) {{")
-                    curr_lines.append(f"            {target_var[1]} += {modify_val};")
-                    curr_lines.append(f"        }} else {{")
-                    curr_lines.append(f"            {target_var[1]} -= {modify_val};")
-                    curr_lines.append(f"        }}")
-                    curr_lines.append(f"    }}")
-                    grouped_lines.append(curr_lines)
-    
-    # Step 4: Store the function meta data for labelling
-    function_meta_data = {
-        "function_name": func_name,
-        "stack_allocation_instruction": None, # Will leave it later for predicting
-        "stack_allocation_size_bytes": None, # ||
-        "variable_mapping": []
-    }
-
-    # Step 5: the escapes - taking address
-    for v_type, v_name, is_array, is_ghost_variable, array_size in all_vars:
-        if is_ghost_variable:
-            continue
-        actual_field_name = STRUCT_DEFS[v_type]["first_field"] if v_type in STRUCT_DEFS else None
-        grouped_lines.append(add_escape(v_name, is_array, actual_field_name))
-
-        # Size logic mapping
-        base_size = STRUCT_DEFS[v_type]["size"] if v_type in STRUCT_DEFS else TYPE_SIZES[v_type]
-        final_size = base_size * array_size if is_array else base_size
+        # Size logic mapping (Pointers are ALWAYS 4 bytes in 32-bit x86)
+        if v_type == "pointer":
+            final_size = 4
 
         function_meta_data["variable_mapping"].append({
             "variable_name": v_name,
@@ -298,46 +334,36 @@ def generate_function_body(func_id:int) -> tuple[str, dict]:
             "allocation_space_offset": None,
             "size_bytes": final_size
         })
-    
-    # Step 6: Suffle all groups and re-create the function
-    random.shuffle(grouped_lines)
 
+    # Step 6: Shuffle and Assemble
+    random.shuffle(grouped_lines)
     for group in grouped_lines:
-        for line in group:
-            lines.append(line)
+        lines.extend(group)
 
     lines.append("}\n")
     return "\n".join(lines), function_meta_data
 
-def generate_c_code(file_id:int, max_random_func:int) -> tuple[str, dict]:
-    lines = []
+def generate_c_code(file_id: int, max_random_func: int) -> tuple[str, dict]:
+    lines = ["#include <stdio.h>", "#include <stdlib.h>\n"]
 
-    lines.append("#include <stdio.h>")
-    lines.append("#include <stdlib.h>\n")
-
-    # Inject Struct Definitions globally
-    for s_def in STRUCT_DEFS.values():
-        lines.append(s_def["decl"])
+    # Explicitly use the safe declaration order
+    for s_key in STRUCT_DECL_ORDER:
+        lines.append(STRUCT_DEFS[s_key]["decl"])
     lines.append("")
 
-    # Provide opaque function prototypes
     for sink in OPAQUE_SINKS:
         lines.append(f"void {sink}(void*);")
     lines.append("\n")
 
     file_label = {
         "file_id": file_id,
-        "source_code_c": "", 
-        "assembly_code": "", # Empty, ready for parsing script
-        "label": {
-            "functions": []
-        }
+        "source_code_c": "",
+        "assembly_code": "",
+        "label": {"functions": []}
     }
 
-    # Step 2. Randomize how many functions are in this specific C file (e.g., 1 to 10)
     num_functions = random.randint(1, max_random_func)
     for i in range(num_functions):
-        # Pass a unique ID for the function name
         function_code, function_meta_data = generate_function_body(func_id=i)
         lines.append(function_code)
         file_label["label"]["functions"].append(function_meta_data)
@@ -355,30 +381,23 @@ if __name__ == "__main__":
     source_code_dir = os.path.join(args.output_dir, SOURCE_C_CODE_DIR)
     os.makedirs(source_code_dir, exist_ok=True)
     LOGGER.info("Generating samples for %d", args.num_samples)
-    
+
     success_count = 0
     dataset_records = []
     for i in tqdm(range(args.num_samples), desc="Generating samples"):
         file_path = os.path.join(source_code_dir, f"sample_{i:05d}.c")
-
         try:
             c_code, file_label_data = generate_c_code(i, args.max_random_func)
-
             with open(file_path, "w") as f:
                 f.write(c_code)
-            
-            # Save metadata to dataset array
             dataset_records.append(file_label_data)
             success_count += 1
         except IOError as e:
             LOGGER.error("Failed to generate c code to %s : %s", file_path, e)
 
-    # Final step : Output the JSON Ground Truth File
     json_path = os.path.join(args.output_dir, "dataset_labels.json")
     try:
         placeholders = {}
-        
-        # 1. Convert inner dictionaries, tracked with tqdm
         for record in tqdm(dataset_records, desc="Formatting variable mapping strings"):
             for func in record["label"]["functions"]:
                 new_mappings = []
@@ -388,36 +407,27 @@ if __name__ == "__main__":
                     placeholders[ph] = compact_str
                     new_mappings.append(ph)
                 func["variable_mapping"] = new_mappings
-        
+
         LOGGER.info("Serializing main JSON structure...")
-        # 2. Dump the main JSON with standard indentation (this is fast, C-optimized)
         raw_json = json.dumps(dataset_records, indent=2)
-        
-        # 3. Swap placeholders back using a highly-optimized SINGLE-PASS Regex
-        # Compile a pattern that exactly matches the stringified placeholder (including the quotes)
+
         pattern = re.compile(r'"__VAR_MAPPING_[0-9a-f]{32}__"')
-        
-        # Set up a progress bar for the replacement phase
         pbar = tqdm(total=len(placeholders), desc="Swapping compact JSON blocks")
-        
+
         def replacer(match):
             pbar.update(1)
-            # match.group(0) includes the quotes, e.g. '"__VAR_MAPPING_abc123__"'
-            # We strip them to look up the clean key in our dictionary
             ph_key = match.group(0).strip('"')
             return placeholders[ph_key]
-            
-        # Execute the single-pass replacement
+
         raw_json = pattern.sub(replacer, raw_json)
         pbar.close()
-            
-        # 4. Write perfectly formatted file
+
         LOGGER.info("Writing JSON to disk...")
         with open(json_path, "w") as jf:
             jf.write(raw_json)
-            
+
         LOGGER.info("Successfully saved ground truth JSON to %s", json_path)
     except IOError as e:
         LOGGER.error("Failed to save JSON file: %s", e)
-    
+
     LOGGER.info("Successfully generated %d C programs and saved to %s", success_count, source_code_dir)
