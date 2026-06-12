@@ -10,8 +10,8 @@ export TOKENIZERS_PARALLELISM=false
 #     --json_path ./data/dataset_labels.json \
 #     --asm_dir ./data/assembly_codes
 
-python -m generateData.parse_labels \
-    --json_path ./data/dataset_labels.json
+# python -m generateData.parse_labels \
+#     --json_path ./data/dataset_labels.json
 
 # this saves the data to ./data/dataset_labels_sanitized.json
 # python -m generateData.stripping_debug_asm_lines \
@@ -31,22 +31,29 @@ python -m generateData.parse_labels \
 #     --output_path ./data/dataset_val_small.json \
 #     --keep_percentage 0.30
 
+# baseline check
+python -m LLM_fine_tuning.infer_baseline \
+    --base_model Qwen/Qwen2.5-Coder-7B \
+    --test_dataset_path ./data/dataset_val_small.json \
+    --output_results_json baseline_eval_results.json \
+    --batch_size 16
+
 # Stage 2 : LLM Finetuning
 
 # this will store model and LORA adapters inside output_dir/models and output_dir/LORA_adapter 
-# python -m LLM_fine_tuning.train \
-#     --model_name Qwen/Qwen2.5-Coder-7B \
-#     --dataset_path ./data/dataset_train_small.json \
-#     --val_dataset_path ./data/dataset_val_small.json \
-#     --output_dir ./output_LLM_part_Qwen7B
+python -m LLM_fine_tuning.train \
+    --model_name Qwen/Qwen2.5-Coder-7B \
+    --dataset_path ./data/dataset_train_small.json \
+    --val_dataset_path ./data/dataset_val_small.json \
+    --output_dir ./output_LLM_part_Qwen7B
 
 # this will pull model and LORA adapters inside output_dir/models and output_dir/LORA_adapter -> store the predictions inside output_dir/preds
-# python -m LLM_fine_tuning.infer \
-#     --base_model Qwen/Qwen2.5-Coder-7B \
-#     --adapter_dir ./output_LLM_part_Qwen7B \
-#     --test_dataset_path ./data/dataset_val_small.json \
-#     --output_results_json eval_validation_metrics.json \
-#     --batch_size 16
+python -m LLM_fine_tuning.infer \
+    --base_model Qwen/Qwen2.5-Coder-7B \
+    --adapter_dir ./output_LLM_part_Qwen7B \
+    --test_dataset_path ./data/dataset_val_small.json \
+    --output_results_json eval_validation_metrics.json \
+    --batch_size 16
 
 # python dummy_checks/benchmark_throughput.py \
 #     --model_name Qwen/Qwen2.5-Coder-7B \
