@@ -1,0 +1,29 @@
+[15:57:08] INFO     | setup | ======================================================================
+[15:57:08] INFO     | setup | Logging started at 2026-06-12 15:57:08
+[15:57:08] INFO     | setup | Log file : /scratch/scai/msr/aiy257584/internship/ai-borland-local-guessing/logs/output_inference_baseline_no_lora.txt
+[15:57:08] INFO     | setup | ======================================================================
+[15:57:08] INFO     | __main__ | Loading tokenizer from base model: Qwen/Qwen2.5-Coder-7B
+[15:57:08] DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
+[15:57:09] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+[15:57:09] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/tokenizer_config.json HTTP/1.1" 200 0
+[15:57:09] INFO     | __main__ | Loading base model (no LoRA): Qwen/Qwen2.5-Coder-7B
+[15:57:09] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[15:57:09] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:57:32] INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+[15:57:43] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/generation_config.json HTTP/1.1" 307 0
+[15:57:43] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/generation_config.json HTTP/1.1" 200 0
+[15:57:43] INFO     | __main__ | Formatting raw data using pre-processor...
+[15:57:43] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_val_small.json ...
+[15:57:45] INFO     | LLM_fine_tuning.pre_process | Formatted 3245 examples (0 skipped) from ./data/dataset_val_small.json.
+[15:57:45] INFO     | __main__ | Preparing prompts and sorting by length for optimal batching...
+[15:57:45] INFO     | __main__ | Loaded and sorted 3245 target evaluations.
+[15:57:45] INFO     | __main__ | Starting batched generation loop (Batch Size: 8)...
+[19:27:26] INFO     | __main__ | ========================================
+[19:27:26] INFO     | __main__ |      BASELINE EVALUATION SUMMARY        
+[19:27:26] INFO     | __main__ |    (Base model — no LoRA adapter)       
+[19:27:26] INFO     | __main__ | ========================================
+[19:27:26] INFO     | __main__ | Total Evaluated Samples: 3245
+[19:27:26] INFO     | __main__ | Valid JSON Output Rate:  0.00% (0/3245)
+[19:27:26] INFO     | __main__ | Exact Match Accuracy:    0.00% (0/3245)
+[19:27:26] INFO     | __main__ | ========================================
+[19:27:26] INFO     | __main__ | Results saved to: baseline_eval_results.json

@@ -14,6 +14,12 @@ from transformers import (
 from peft import LoraConfig, get_peft_model
 from trl import SFTTrainer
 
+_original_load = torch.load
+def _safe_load(*args, **kwargs):
+    kwargs.setdefault('weights_only', False)
+    return _original_load(*args, **kwargs)
+torch.load = _safe_load
+
 from hyperparameters.config import LLMConfig
 from .pre_process import load_and_format_dataset
 from utils.loggerClass import setup_logging
@@ -41,6 +47,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--seed",            type=int,   default=42)
     parser.add_argument("--early_stopping",  type=int,   default=3,
                         help="Early stopping patience (epochs). Set 0 to disable.")
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None,
+                        help="Set to 'true' to auto-resume from the latest checkpoint in output_dir, "
+                             "or provide a specific path string to a checkpoint folder.")
 
     # Logging
     parser.add_argument("--log_level", default="INFO",
@@ -209,7 +218,16 @@ def main() -> None:
 
     # 8. Train
     LOGGER.info("Starting fine-tuning ...")
-    trainer.train()
+    
+    # Process the resume parameter
+    resume_flag = args.resume_from_checkpoint
+    if resume_flag and resume_flag.lower() == "true":
+        resume_flag = True
+        LOGGER.info(f"Auto-resuming training from the latest checkpoint found in {args.output_dir}")
+    elif resume_flag:
+        LOGGER.info(f"Resuming training from explicit checkpoint path: {resume_flag}")
+
+    trainer.train(resume_from_checkpoint=resume_flag)
 
     # 9. Save
     LOGGER.info(f"Saving best model to {args.output_dir} ...")
