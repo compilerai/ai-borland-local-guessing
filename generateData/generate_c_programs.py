@@ -327,6 +327,9 @@ def generate_function_body(func_id: int) -> tuple[str, dict]:
         # Size logic mapping (Pointers are ALWAYS 4 bytes in 32-bit x86)
         if v_type == "pointer":
             final_size = 4
+        else:
+            base_size = STRUCT_DEFS[v_type]["size"] if v_type in STRUCT_DEFS else TYPE_SIZES[v_type]
+            final_size = base_size * array_size if is_array else base_size
 
         function_meta_data["variable_mapping"].append({
             "variable_name": v_name,
