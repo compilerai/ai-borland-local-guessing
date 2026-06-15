@@ -15,8 +15,9 @@ LOGGER = logging.getLogger(__name__)
 # FIX 4: Compute a safe max_new_tokens budget.
 # Largest observed valid JSON is ~900 chars ≈ 360 tokens. 420 gives headroom
 # without the long hallucination window that 512 allowed.
-MAX_NEW_TOKENS = 420
-
+MAX_NEW_TOKENS = 512
+output_dir = "eval_validation_metrics"
+os.makedirs(output_dir, exist_ok=True)
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Batched Inference and Evaluation for LoRA Adapter")
@@ -37,36 +38,14 @@ def detect_dtype() -> torch.dtype:
 
 
 def extract_json_block(text: str) -> str:
-    """
-    FIX 3: Upgraded extractor — validates that the extracted slice is actually
-    parseable JSON before returning it. Previously the function returned the
-    slice blindly, so trailing hallucinated text after a valid JSON object
-    (system-prompt bleed, Q&A loops, ETwitter spam) would land inside the
-    returned string and cause json.loads() to fail even though the JSON itself
-    was correct.
-
-    Strategy:
-    1. Strip markdown fences.
-    2. Find the first '{'.
-    3. Walk forward from there trying progressively smaller rfind('}') windows
-       until json.loads() succeeds. This handles the common case where the
-       model generated valid JSON then appended garbage after the closing '}'.
-    """
     cleaned = text.strip()
-
-    # Strip markdown fences
-    if "```json" in cleaned:
-        cleaned = cleaned.split("```json")[-1].split("```")[0].strip()
-    elif "```" in cleaned:
-        cleaned = cleaned.split("```")[-1].split("```")[0].strip()
-
+    
+    # 1. Find the first '{' (naturally bypasses any leading text or ```json fences)
     start = cleaned.find("{")
     if start == -1:
         return cleaned
 
-    # Walk candidate end positions from right to left, return the first
-    # substring that parses as valid JSON. This gracefully handles any
-    # post-JSON hallucination regardless of its length or content.
+    # 2. Sliding window: start from the end and shrink until it parses
     search_region = cleaned[start:]
     end = len(search_region)
     while end > 0:
@@ -76,16 +55,15 @@ def extract_json_block(text: str) -> str:
         candidate = search_region[: candidate_end + 1]
         try:
             json.loads(candidate)
-            return candidate          # First (longest) valid JSON wins
+            return candidate          # First (longest) valid JSON wins!
         except json.JSONDecodeError:
-            end = candidate_end       # Shrink window and try again
+            end = candidate_end       # Shrink window to the previous '}' and try again
 
-    # Fallback: return everything from the first '{' to the last '}'
+    # Fallback
     end = cleaned.rfind("}")
     if end != -1:
         return cleaned[start : end + 1]
     return cleaned
-
 
 def compare_json_objects(pred_str: str, target_str: str) -> bool:
     try:
@@ -115,7 +93,7 @@ def main() -> None:
     base_model = AutoModelForCausalLM.from_pretrained(
         args.base_model,
         device_map="auto",
-        torch_dtype=dtype,
+        torch_dtype=torch.bfloat16,
         trust_remote_code=True,
     )
 
@@ -186,7 +164,11 @@ def main() -> None:
             outputs = model.generate(
                 **inputs,
                 max_new_tokens=MAX_NEW_TOKENS,
-                do_sample=False,
+                # do_sample=True,          # Forces the model out of death loops!
+                # temperature=0.2,         # Keeps the logic tight and factual
+                # top_p=0.9,               # Prevents wild, random guessing
+                do_sample=False,          # Back to Greedy for perfect, robotic JSON syntax
+                repetition_penalty=1.1,   # The magic bullet: kills infinite death-loops!
                 pad_token_id=tokenizer.pad_token_id,
                 eos_token_id=tokenizer.eos_token_id,
             )
@@ -243,10 +225,12 @@ def main() -> None:
         "results": evaluation_records
     }
 
-    with open(args.output_results_json, "w", encoding="utf-8") as out_f:
+    output_results_path = os.path.join(output_dir, args.output_results_json)
+
+    with open(output_results_path, "w", encoding="utf-8") as out_f:
         json.dump(metrics_summary, out_f, indent=4)
 
-    LOGGER.info(f"Results saved to: {args.output_results_json}")
+    LOGGER.info(f"Results saved to: {output_results_path}")
 
 
 if __name__ == "__main__":

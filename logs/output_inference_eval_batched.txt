@@ -1,27 +1,27 @@
-[15:11:37] INFO     | setup | ======================================================================
-[15:11:37] INFO     | setup | Logging started at 2026-06-13 15:11:37
-[15:11:37] INFO     | setup | Log file : /scratch/scai/msr/aiy257584/internship/ai-borland-local-guessing/logs/output_inference_eval_batched.txt
-[15:11:37] INFO     | setup | ======================================================================
-[15:11:37] INFO     | __main__ | Loading tokenizer from adapter path: ./output_LLM_part_Qwen7B
-[15:11:37] INFO     | __main__ | Loading base model: Qwen/Qwen2.5-Coder-7B
-[15:11:37] DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
-[15:11:38] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[15:11:38] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[15:11:39] INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-[15:11:49] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/generation_config.json HTTP/1.1" 307 0
-[15:11:49] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/generation_config.json HTTP/1.1" 200 0
-[15:11:49] INFO     | __main__ | Merging LoRA adapter from: ./output_LLM_part_Qwen7B
-[15:11:49] INFO     | __main__ | Formatting raw data using pre-processor...
-[15:11:49] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_val_small.json ...
-[15:11:51] INFO     | LLM_fine_tuning.pre_process | Formatted 3245 examples (0 skipped) from ./data/dataset_val_small.json.
-[15:11:51] INFO     | __main__ | Preparing prompts and sorting by length for optimal batching...
-[15:11:51] INFO     | __main__ | Loaded and sorted 3245 target evaluations.
-[15:11:51] INFO     | __main__ | Starting batched generation loop (Batch Size: 8, Max New Tokens: 420)...
-[18:18:01] INFO     | __main__ | ========================================
-[18:18:01] INFO     | __main__ |           EVALUATION SUMMARY            
-[18:18:01] INFO     | __main__ | ========================================
-[18:18:01] INFO     | __main__ | Total Evaluated Samples: 3245
-[18:18:01] INFO     | __main__ | Valid JSON Output Rate:  76.61% (2486/3245)
-[18:18:01] INFO     | __main__ | Exact Match Accuracy:    75.81% (2460/3245)
-[18:18:01] INFO     | __main__ | ========================================
-[18:18:02] INFO     | __main__ | Results saved to: eval_validation_metrics.json
+[17:03:00] INFO     | setup | ======================================================================
+[17:03:00] INFO     | setup | Logging started at 2026-06-15 17:03:00
+[17:03:00] INFO     | setup | Log file : /scratch/scai/msr/aiy257584/internship/ai-borland-local-guessing/logs/output_inference_eval_batched.txt
+[17:03:00] INFO     | setup | ======================================================================
+[17:03:01] INFO     | __main__ | Loading tokenizer from adapter path: ./output_LLM_part_Qwen7B
+[17:03:02] INFO     | __main__ | Loading base model: Qwen/Qwen2.5-Coder-7B
+[17:03:02] DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
+[17:03:02] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[17:03:02] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[17:03:08] INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+[17:03:31] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/generation_config.json HTTP/1.1" 307 0
+[17:03:31] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/generation_config.json HTTP/1.1" 200 0
+[17:03:31] INFO     | __main__ | Merging LoRA adapter from: ./output_LLM_part_Qwen7B
+[17:03:32] INFO     | __main__ | Formatting raw data using pre-processor...
+[17:03:32] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_val_smallest.json ...
+[17:03:32] INFO     | LLM_fine_tuning.pre_process | Formatted 215 examples (0 skipped) from ./data/dataset_val_smallest.json.
+[17:03:33] INFO     | __main__ | Preparing prompts and sorting by length for optimal batching...
+[17:03:33] INFO     | __main__ | Loaded and sorted 215 target evaluations.
+[17:03:33] INFO     | __main__ | Starting batched generation loop (Batch Size: 8, Max New Tokens: 512)...
+[17:18:48] INFO     | __main__ | ========================================
+[17:18:48] INFO     | __main__ |           EVALUATION SUMMARY            
+[17:18:48] INFO     | __main__ | ========================================
+[17:18:48] INFO     | __main__ | Total Evaluated Samples: 215
+[17:18:48] INFO     | __main__ | Valid JSON Output Rate:  100.00% (215/215)
+[17:18:48] INFO     | __main__ | Exact Match Accuracy:    99.53% (214/215)
+[17:18:48] INFO     | __main__ | ========================================
+[17:18:48] INFO     | __main__ | Results saved to: eval_validation_metrics/eval_validation_metrics.json
