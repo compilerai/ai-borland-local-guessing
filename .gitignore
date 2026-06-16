@@ -2,4 +2,5 @@ __pycache__
 ./*/__pycache__
 data/*
 data_00/*
+borland_shared/*
 output_LLM_part_Qwen7B

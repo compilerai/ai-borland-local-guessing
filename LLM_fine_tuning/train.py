@@ -221,11 +221,16 @@ def main() -> None:
     
     # Process the resume parameter
     resume_flag = args.resume_from_checkpoint
-    if resume_flag and resume_flag.lower() == "true":
-        resume_flag = True
-        LOGGER.info(f"Auto-resuming training from the latest checkpoint found in {args.output_dir}")
-    elif resume_flag:
-        LOGGER.info(f"Resuming training from explicit checkpoint path: {resume_flag}")
+    
+    if resume_flag:
+        if resume_flag.lower() == "true":
+            resume_flag = True
+            LOGGER.info(f"Auto-resuming training from the latest checkpoint found in {args.output_dir}")
+        elif resume_flag.lower() == "false" or resume_flag.lower() == "none":
+            resume_flag = None
+            LOGGER.info("Resuming training from explicit checkpoint path: false")
+        else:
+            LOGGER.info(f"Resuming training from explicit checkpoint path: {resume_flag}")
 
     trainer.train(resume_from_checkpoint=resume_flag)
 

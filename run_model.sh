@@ -2,7 +2,7 @@
 
 export TOKENIZERS_PARALLELISM=false
 
-# python -m generateData.generate_c_programs --num_samples 10000 \
+# python -m generateData.generate_c_programs --num_samples 3000 \
 #     --max_random_func 10 \
 #     --output_dir ./data
 
@@ -26,10 +26,10 @@ export TOKENIZERS_PARALLELISM=false
 #     --output_path ./data/dataset_train_small.json \
 #     --keep_percentage 0.30
 
-python -m generateData.slice_data \
-    --input_path ./data/dataset_val.json \
-    --output_path ./data/dataset_val_smallest.json \
-    --keep_percentage 0.02
+# python -m generateData.slice_data \
+#     --input_path ./data/dataset_val.json \
+#     --output_path ./data/dataset_val_smallest.json \
+#     --keep_percentage 0.02
 
 # baseline check
 # python -m LLM_fine_tuning.infer_baseline \
@@ -43,18 +43,18 @@ python -m generateData.slice_data \
 # this will store model and LORA adapters inside output_dir/models and output_dir/LORA_adapter 
 # python -m LLM_fine_tuning.train \
 #     --model_name Qwen/Qwen2.5-Coder-7B \
-#     --dataset_path ./data/dataset_train_small.json \
-#     --val_dataset_path ./data/dataset_val_small.json \
+#     --dataset_path ./data/dataset_train.json \
+#     --val_dataset_path ./data/dataset_val.json \
 #     --output_dir ./output_LLM_part_Qwen7B \
-#     --resume_from_checkpoint true
+#     --resume_from_checkpoint false
 
 # this will pull model and LORA adapters inside output_dir/models and output_dir/LORA_adapter -> store the predictions inside output_dir/preds
-python -m LLM_fine_tuning.infer \
-    --base_model Qwen/Qwen2.5-Coder-7B \
-    --adapter_dir ./output_LLM_part_Qwen7B \
-    --test_dataset_path ./data/dataset_val_smallest.json \
-    --output_results_json eval_validation_metrics.json \
-    --batch_size 8
+# python -m LLM_fine_tuning.infer \
+#     --base_model Qwen/Qwen2.5-Coder-7B \
+#     --adapter_dir ./output_LLM_part_Qwen7B \
+#     --test_dataset_path ./data/dataset_val.json \
+#     --output_results_json eval_validation_metrics.json \
+#     --batch_size 8
 
 # python dummy_checks/benchmark_throughput.py \
 #     --model_name Qwen/Qwen2.5-Coder-7B \
@@ -65,4 +65,4 @@ python -m LLM_fine_tuning.infer \
 #     --warmup_steps 5 \
 #     --measure_steps 20
 
-# python dummy_checks/plot_metric.py 
+python dummy_checks/plot_metric.py 

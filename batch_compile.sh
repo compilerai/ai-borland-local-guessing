@@ -1,43 +1,54 @@
 #!/bin/bash
 
-# Define absolute paths to avoid directory jumping confusion
-BASE_DIR=$(pwd)
-INPUT_DIR="$BASE_DIR/internship/source_codes"
-OUTPUT_DIR="$BASE_DIR/internship/assembly_codes"
+# --- CONFIGURATION ---
+OLD_SERVER="trishanku@kiwi.cse.iitd.ac.in" 
+REMOTE_WORKSPACE="~/borland_remote_compiler"
+LOCAL_DATA_DIR="./data/source_codes"
+LOCAL_ASM_DIR="./data/assembly_codes"
 
-# Create the output directory if it doesn't exist
-mkdir -p "$OUTPUT_DIR"
+echo "Initiating Remote Compilation via $OLD_SERVER..."
 
-# Silence Wine's annoying "fixme:" warnings to keep your terminal clean
-export WINEDEBUG=-all
+# Ensure the local assembly directory exists before we try to download into it
+mkdir -p "$LOCAL_ASM_DIR"
 
-# Count total files for a progress tracker
-total=$(ls -1 "$INPUT_DIR"/*.c 2>/dev/null | wc -l)
-count=1
+# 1. Create remote workspace
+ssh "$OLD_SERVER" "mkdir -p $REMOTE_WORKSPACE"
 
-echo "Found $total .c files. Starting compilation..."
+# 2. Sync the C files over
+echo "1/3: Teleporting .c files to the old server..."
+rsync -avz "$LOCAL_DATA_DIR/"*.c "$OLD_SERVER:$REMOTE_WORKSPACE/"
 
-# Move into the input directory so Borland doesn't struggle with Linux paths
-cd "$INPUT_DIR" || exit
+# 3. Run YOUR robust batch_compile logic remotely via SSH Here-Doc
+echo "2/3: Running robust Borland Compiler loop through Wine..."
+ssh "$OLD_SERVER" "bash -s" << 'EOF'
+    # --- THIS CODE RUNS ON THE OLD SERVER ---
+    cd ~/borland_remote_compiler || exit
+    
+    # Silence Wine's annoying "fixme:" warnings
+    export WINEDEBUG=-all
 
-# Loop through every .c file
-for file in *.c; do
-    echo "[$count/$total] Compiling $file..."
+    total=$(ls -1 *.c 2>/dev/null | wc -l)
+    count=1
 
-    # Run the Borland compiler via Wine
-    wine /opt/borlandc/BIN/bcc32.exe -S -c -x-RT -D__CODEGUARD__ "$file" > /dev/null 2>&1
+    echo "Found $total .c files on remote server. Starting compilation..."
 
-    # Extract the filename without the .c extension
-    basename="${file%.c}"
+    for file in *.c; do
+        # Print progress every 100 files to avoid spamming the SSH connection
+        if [ $((count % 100)) -eq 0 ] || [ $count -eq 1 ]; then
+            echo "[$count/$total] Compiling..."
+        fi
 
-    # Check if the compiler successfully generated the .asm file, then move it
-    if [ -f "${basename}.asm" ]; then
-        mv "${basename}.asm" "$OUTPUT_DIR/"
-    else
-        echo "  -> Warning: Failed to generate assembly for $file"
-    fi
+        # Run the Borland compiler via Wine
+        wine /opt/borlandc/BIN/bcc32.exe -S -c -x-RT -D__CODEGUARD__ "$file" > /dev/null 2>&1
+        
+        count=$((count + 1))
+    done
+    
+    echo "Remote compilation finished!"
+EOF
 
-    count=$((count + 1))
-done
+# 4. Bring the ASM files back (Routing specifically to the ASM folder)
+echo "3/3: Retrieving .asm files back to current server..."
+rsync -avz "$OLD_SERVER:$REMOTE_WORKSPACE/"*.asm "$LOCAL_ASM_DIR/"
 
-echo "All done! Check the '$OUTPUT_DIR' folder for your files."
+echo "Done! All .asm files are now locally available in $LOCAL_ASM_DIR."

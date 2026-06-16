@@ -1,50 +1,50 @@
-[09:43:18] INFO     | setup | ======================================================================
-[09:43:18] INFO     | setup | Logging started at 2026-06-13 09:43:18
-[09:43:18] INFO     | setup | Log file : /scratch/scai/msr/aiy257584/internship/ai-borland-local-guessing/logs/output_output_LLM_part_Qwen7B.txt
-[09:43:18] INFO     | setup | ======================================================================
-[09:43:18] INFO     | __main__ | Using dtype: torch.bfloat16
-[09:43:18] INFO     | __main__ | Loading datasets ...
-[09:43:18] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_train_small.json ...
-[09:43:23] INFO     | LLM_fine_tuning.pre_process | Formatted 13265 examples (0 skipped) from ./data/dataset_train_small.json.
-[09:43:24] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_val_small.json ...
-[09:43:26] INFO     | LLM_fine_tuning.pre_process | Formatted 3245 examples (0 skipped) from ./data/dataset_val_small.json.
-[09:43:26] INFO     | __main__ | Train: 13265 | Val: 3245
-[09:43:26] INFO     | __main__ | Loading tokenizer: Qwen/Qwen2.5-Coder-7B
-[09:43:26] DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
-[09:43:26] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
-[09:43:26] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/tokenizer_config.json HTTP/1.1" 200 0
-[09:43:29] INFO     | __main__ | Avg tokens/sample: 3419, max: 5643
-[09:43:29] INFO     | __main__ | Loading model: Qwen/Qwen2.5-Coder-7B
-[09:43:29] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[09:43:29] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[09:43:31] INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-[09:43:40] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/generation_config.json HTTP/1.1" 307 0
-[09:43:40] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/generation_config.json HTTP/1.1" 200 0
-[09:43:40] INFO     | __main__ |   VRAM after model load : 15.7 GB
-[09:43:41] INFO     | __main__ | Early stopping enabled (patience=3)
-[09:43:41] INFO     | __main__ | Initialising SFTTrainer ...
-[09:43:41] INFO     | root | Formatting dataset with chatml format
-[09:45:25] WARNING  | accelerate.utils.other | Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
-[09:45:25] INFO     | __main__ | Starting fine-tuning ...
-[09:45:25] INFO     | __main__ | Auto-resuming training from the latest checkpoint found in ./output_LLM_part_Qwen7B
-[14:48:09] DEBUG    | urllib3.connectionpool | Resetting dropped connection: huggingface.co
-[14:48:10] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[14:48:10] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[14:48:10] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[14:48:10] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[14:48:13] INFO     | __main__ | Saving best model to ./output_LLM_part_Qwen7B ...
-[14:48:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[14:48:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[14:48:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[14:48:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[14:48:15] INFO     | __main__ | Done.
-huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[10:13:13] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[10:13:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[10:13:14] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[10:13:15] INFO     | __main__ | Saving best model to ./output_LLM_part_Qwen7B ...
-[10:13:16] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[10:13:16] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[10:13:16] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
-[10:13:16] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
-[10:13:17] INFO     | __main__ | Done.
+[01:26:40] INFO     | setup | ======================================================================
+[01:26:40] INFO     | setup | Logging started at 2026-06-16 01:26:40
+[01:26:40] INFO     | setup | Log file : /scratch/scai/msr/aiy257584/internship/ai-borland-local-guessing/logs/output_output_LLM_part_Qwen7B.txt
+[01:26:40] INFO     | setup | ======================================================================
+[01:26:40] INFO     | __main__ | Using dtype: torch.bfloat16
+[01:26:40] INFO     | __main__ | Loading datasets ...
+[01:26:40] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_train.json ...
+[01:26:45] INFO     | LLM_fine_tuning.pre_process | Formatted 13086 examples (0 skipped) from ./data/dataset_train.json.
+[01:26:46] INFO     | LLM_fine_tuning.pre_process | Loading dataset from ./data/dataset_val.json ...
+[01:26:47] INFO     | LLM_fine_tuning.pre_process | Formatted 3224 examples (0 skipped) from ./data/dataset_val.json.
+[01:26:47] INFO     | __main__ | Train: 13086 | Val: 3224
+[01:26:47] INFO     | __main__ | Loading tokenizer: Qwen/Qwen2.5-Coder-7B
+[01:26:47] DEBUG    | urllib3.connectionpool | Starting new HTTPS connection (1): huggingface.co:443
+[01:26:47] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+[01:26:47] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/tokenizer_config.json HTTP/1.1" 200 0
+[01:26:50] INFO     | __main__ | Avg tokens/sample: 3135, max: 5934
+[01:26:50] INFO     | __main__ | Loading model: Qwen/Qwen2.5-Coder-7B
+[01:26:51] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[01:26:51] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[01:26:52] INFO     | accelerate.utils.modeling | We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+[01:27:02] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/generation_config.json HTTP/1.1" 307 0
+[01:27:02] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/generation_config.json HTTP/1.1" 200 0
+[01:27:02] INFO     | __main__ |   VRAM after model load : 15.7 GB
+[01:27:02] INFO     | __main__ | Early stopping enabled (patience=3)
+[01:27:02] INFO     | __main__ | Initialising SFTTrainer ...
+[01:27:02] INFO     | root | Formatting dataset with chatml format
+[01:28:41] WARNING  | accelerate.utils.other | Detected kernel version 3.10.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+[01:28:41] INFO     | __main__ | Starting fine-tuning ...
+[01:28:41] INFO     | __main__ | Resuming training from explicit checkpoint path: false
+[06:09:17] DEBUG    | urllib3.connectionpool | Resetting dropped connection: huggingface.co
+[06:09:19] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[06:09:19] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[06:09:19] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[06:09:19] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[10:48:32] DEBUG    | urllib3.connectionpool | Resetting dropped connection: huggingface.co
+[10:48:34] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[10:48:34] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[10:48:34] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[10:48:34] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:28:10] DEBUG    | urllib3.connectionpool | Resetting dropped connection: huggingface.co
+[15:28:11] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[15:28:11] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:28:12] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[15:28:12] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:28:14] INFO     | __main__ | Saving best model to ./output_LLM_part_Qwen7B ...
+[15:28:15] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[15:28:15] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:28:15] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /Qwen/Qwen2.5-Coder-7B/resolve/main/config.json HTTP/1.1" 307 0
+[15:28:15] DEBUG    | urllib3.connectionpool | https://huggingface.co:443 "HEAD /api/resolve-cache/models/Qwen/Qwen2.5-Coder-7B/0396a76181e127dfc13e5c5ec48a8cee09938b02/config.json HTTP/1.1" 200 0
+[15:28:16] INFO     | __main__ | Done.
